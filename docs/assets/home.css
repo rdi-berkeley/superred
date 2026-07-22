@@ -1,0 +1,1527 @@
+/* SuperRed landing page: same design language as the docs. Garamond, black on
+   white, restrained grays. Kept deliberately plain. */
+
+:root {
+  --ink: #111111;
+  --gray: #808080;
+  --line: #e6e6e6;
+  --code-bg: #f6f6f6;
+  --serif: Garamond, "EB Garamond", "Adobe Garamond Pro", "Times New Roman", serif;
+  --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --page: 860px;
+  /* elevation + motion tokens for the finesse pass: soft, low-contrast shadows
+     and one shared easing so every hover/lift across the page feels the same */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.04), 0 2px 6px rgba(17, 17, 17, 0.05);
+  --shadow-md: 0 4px 12px rgba(17, 17, 17, 0.07), 0 10px 24px rgba(17, 17, 17, 0.06);
+  --shadow-red: 0 4px 14px rgba(237, 33, 33, 0.22);
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+}
+
+a { color: var(--ink); }
+
+/* Header lives in site.css (shared across all pages). */
+
+/* ---- shared section frame ---- */
+/* Full-width editorial layout: the section heading sits in a left rail, the
+   content fills the rest. Uses the whole width with structure. */
+.section {
+  padding: 4rem var(--gutter);
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  column-gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+.section-head { position: sticky; top: calc(var(--header-h) + 3rem); }
+.section-body > :first-child { margin-top: 0; }
+@media (max-width: 860px) {
+  .section { grid-template-columns: 1fr; row-gap: 1.2rem; }
+  .section-head { position: static; }
+}
+.eyebrow {
+  margin: 0 0 0.8rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.section h2 {
+  font-size: var(--fs-head);
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+}
+.section p { margin: 0 0 1rem; }
+.section p:last-child { margin-bottom: 0; }
+.muted { color: var(--gray); }
+
+/* Intro pull-quote: opens the page as one centered statement. Overrides the
+   section's two-column grid so the text is truly centered (not offset into the
+   body column), and lifts the type into an italic serif quote that stands
+   apart from body copy. The two-class selector beats `.section p`. */
+.intro-quote {
+  display: block;
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.intro-quote .intro-lede {
+  max-width: 70ch;
+  margin: 0 auto;
+  font-size: clamp(1.25rem, 2vw, 1.45rem);
+  line-height: 1.5;
+  font-weight: 300;
+  color: #5c5c5c;
+}
+/* A big, faint opening quote mark keeps the block reading as a quote now that
+   the text is upright (italic hurt readability). */
+.intro-quote .intro-lede::before {
+  content: "\201C";
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 3.4rem;
+  line-height: 1;
+  color: #d0d0d0;
+}
+/* Bold terms carry the meaning: keep them full-ink and heavy while the rest of
+   the quote sits lighter, so the emphasis reads at a glance. */
+.intro-quote .intro-lede strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* module catalogue (modules.html): JS-free sticky tabs + adaptive grid */
+.tabs > input { position: absolute; opacity: 0; width: 0; height: 0; }
+.tablist {
+  position: sticky;
+  top: calc(var(--header-h) + 3rem);
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.6rem 0 0.4rem;
+  padding: 0.5rem 0;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+/* Opaque band that covers the gap between the header and the stuck tabs so
+   grid rows don't show through when scrolling. */
+.tablist::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 3rem;
+  background: #fff;
+}
+.tablist label {
+  cursor: pointer;
+  padding: 0.35rem 0.85rem;
+  border-radius: 5px;
+  color: var(--gray);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+.tablist label:hover { color: var(--ink); }
+.tablist label .n { opacity: 0.55; }
+.tabpanel { display: none; }
+#tab-attackers:checked ~ .tablist label[for="tab-attackers"],
+#tab-targets:checked ~ .tablist label[for="tab-targets"],
+#tab-claims:checked ~ .tablist label[for="tab-claims"] {
+  color: var(--ink);
+  background: var(--code-bg);
+  font-weight: 500;
+}
+#tab-attackers:checked ~ .panel-attackers,
+#tab-targets:checked ~ .panel-targets,
+#tab-claims:checked ~ .panel-claims { display: block; }
+
+.mod-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+}
+.mod-row { display: contents; }
+.mod-grid .mod-name,
+.mod-grid .mod-desc {
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--line);
+}
+.mod-grid .mod-name {
+  padding-right: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+.mod-title { font-weight: 500; white-space: nowrap; }
+.mod-meta { display: flex; align-items: center; gap: 0.4rem; }
+.mod-meta .mod-suit, .mod-meta .mod-tag { margin-left: 0; }
+.mod-grid .mod-desc { color: var(--gray); }
+.mod-pip {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--gray);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.08rem 0.45rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mod-pip:hover { color: var(--ink); border-color: var(--gray); }
+
+/* custom filter dropdowns (tag-styled options) */
+.mod-filters { margin-left: auto; display: flex; gap: 0.5rem; }
+.dropdown { position: relative; }
+.dropdown-toggle {
+  font-family: inherit;
+  font-size: var(--fs-small);
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.dropdown-toggle::after { content: "\25BE"; color: var(--gray); font-size: 0.7em; }
+.dropdown-toggle:hover { border-color: var(--gray); }
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 5px);
+  z-index: 30;
+  min-width: 100%;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+  padding: 0.3rem;
+}
+.dropdown.open .dropdown-menu { display: block; }
+.dropdown-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.3rem 0.4rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: var(--fs-small);
+  color: var(--gray);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dropdown-menu button:hover { background: var(--code-bg); }
+.dropdown .mod-suit, .dropdown .mod-tag, .dropdown .mod-src { margin-left: 0; }
+.mod-src {
+  display: inline-block;
+  padding: 0.02rem 0.5rem;
+  font-size: var(--fs-small);
+  border-radius: 999px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.mod-src-first { color: #2c5aa0; background: #eef3fb; border: 1px solid #d6e0f0; }
+
+/* custom quick tooltip on tags */
+.hint { position: relative; display: inline-block; cursor: help; }
+.hint .tip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  width: max-content;
+  max-width: 22rem;
+  white-space: normal;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  padding: 0.6rem 0.75rem;
+  font-family: var(--serif);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+  cursor: default;
+}
+.hint:hover .tip { display: block; }
+.hint .tip b { font-weight: 600; }
+.mod-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.02rem 0.5rem;
+  font-size: var(--fs-small);
+  font-weight: 400;
+  color: var(--gray);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.mod-tag-port    { color: #8a5a1a; background: #f8efe2; border-color: #ecdcc4; }
+.mod-tag-first   { color: #2c5aa0; background: #eef3fb; border-color: #d6e0f0; }
+.mod-tag-agentic { color: #3f7d3f; background: #eef6ee; border-color: #d3e6d3; }
+/* suitability tag (chatbot / agentic / assistant), explained on hover */
+.mod-suit {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.02rem 0.55rem;
+  font-size: var(--fs-small);
+  border-radius: 999px;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: help;
+}
+.mod-suit-chatbot   { color: #4f5560; background: #eef0f2; border: 1px solid #dfe3e7; }
+.mod-suit-agentic   { color: #6b3fa0; background: #f3eefb; border: 1px solid #e2d6f4; }
+.mod-suit-assistant { color: #a35a00; background: #fbf1e3; border: 1px solid #eeddc4; }
+/* pip package name, links to the guide section on using this kind of module */
+.mod-pip {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--gray);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mod-pip:hover { color: var(--ink); text-decoration: underline; }
+@media (max-width: 640px) {
+  .mod-grid { grid-template-columns: 1fr; }
+  .mod-grid .mod-desc { border-top: none; padding-top: 0; padding-bottom: 0.7rem; }
+}
+
+/* ---- hero ---- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 84vh;
+  padding: 3rem var(--gutter) 4rem;
+}
+
+/* ---- the entrance aura ----
+   A pastel red field that should read as one living body rather than a stack of
+   circles. The lobes multiply into one another, so overlaps deepen the red and
+   the mass gains internal density; a lone blob would just look like a gradient.
+
+   The field is built in two registers, because one alone fails:
+
+   1. The four background lobes carry no intensity of their own and drift on
+      very slow prime periods (97/113/131/149s against 71/79/83/89s). Their
+      opacity swing is deliberately narrow, so the back never reads as a
+      throb. This is atmosphere, not movement you watch.
+   2. The bubble is the one intense body, and it roams on a much shorter
+      period. It is the element that proves the field is alive: you should see
+      it travel within a few seconds rather than wonder whether you imagined it.
+
+   Nothing is on a metronome. Every period is coprime with its neighbours, so
+   the composite only returns to a given state after their least common
+   multiple, far longer than anyone will sit here: the field keeps developing
+   and never visibly loops. Negative delays start it mid-life, so it never opens
+   on a synced frame.
+
+   Only transform/translate/scale and opacity animate, so the whole field stays
+   on the compositor. The grain is static and costs nothing per frame. */
+.hero-aura {
+  position: absolute;
+  inset: -14% 0 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: #ffffff;
+  /* Confine the multiply blending to the lobes and this white base, so the
+     aura can never darken the type or the page behind it. */
+  isolation: isolate;
+  /* Dissolve into the page before the next section begins. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 54%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000 54%, transparent 95%);
+}
+/* A wash of whites over the coloured field: a plain white veil whose opacity
+   swells and recedes, so the hero repeatedly dissolves toward white and blooms
+   back. Only opacity animates (compositor-only, no repaint), which is why this
+   does not flicker the way an animated `filter` on the blurred, blended lobe
+   subtree did. Sits above the lobes but below the grain and the type. */
+.hero-aura::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #ffffff;
+  pointer-events: none;
+  animation: aura-wash 60s ease-in-out infinite;
+  animation-delay: -13s;
+  will-change: opacity;
+}
+@keyframes aura-wash {
+  0%   { opacity: 0.12; }
+  16%  { opacity: 0.28; }
+  33%  { opacity: 0.40; }  /* lightest bloom, still holds red */
+  50%  { opacity: 0.18; }
+  66%  { opacity: 0.44; }
+  83%  { opacity: 0.26; }
+  100% { opacity: 0.12; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-aura::after { animation: none; opacity: 0.22; }
+}
+.hero > *:not(.hero-aura) { position: relative; z-index: 1; }
+
+.lobe {
+  position: absolute;
+  mix-blend-mode: multiply;
+  will-change: transform, opacity;
+}
+/* Warm coral: the body of the mass, anchored top-left. */
+.lobe-1 {
+  width: 80vw; height: 80vw; left: -18%; top: -30%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(252, 84, 62, 0.56), rgba(252, 84, 62, 0.30) 36%, rgba(252, 84, 62, 0) 70%);
+  animation: wander-1 180s ease-in-out infinite, wane-a 130s ease-in-out infinite;
+  animation-delay: -37s, -19s;
+}
+/* Blush: broadens the field across the top-right. */
+.lobe-2 {
+  width: 72vw; height: 72vw; left: 48%; top: -24%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 128, 118, 0.58), rgba(255, 128, 118, 0.31) 38%, rgba(255, 128, 118, 0) 72%);
+  animation: wander-2 210s ease-in-out infinite, wane-b 150s ease-in-out infinite;
+  animation-delay: -61s, -43s;
+}
+/* Rose-magenta: the violet cast that makes the red mystic rather than sunset. */
+.lobe-3 {
+  width: 64vw; height: 64vw; left: 16%; top: 16%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(219, 74, 124, 0.44), rgba(219, 74, 124, 0.24) 34%, rgba(219, 74, 124, 0) 68%);
+  animation: wander-3 240s ease-in-out infinite, wane-c 160s ease-in-out infinite;
+  animation-delay: -17s, -67s;
+}
+/* Pale peach: keeps the lower field light so the type stays legible. */
+.lobe-4 {
+  width: 68vw; height: 68vw; left: -12%; top: 40%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 166, 132, 0.46), rgba(255, 166, 132, 0.24) 36%, rgba(255, 166, 132, 0) 70%);
+  animation: wander-4 270s ease-in-out infinite, wane-b 170s ease-in-out infinite;
+  animation-delay: -103s, -29s;
+}
+
+/* The bubble: the denser body in the field, and the only thing here whose motion
+   you are meant to catch. It roams a long meandering circuit, so it travels
+   visibly within a few seconds rather than leaving you wondering.
+
+   It must not read as a disc sliding over a background. So there is no circle
+   anywhere: the box is oblong and carries two offset ellipses of slightly
+   different reds, which fuse into a lumpy mass with no single clean edge, and
+   the falloff runs long so it dissolves into the field instead of ending. It
+   should be tellable apart only just.
+
+   Position and breath use the separate translate/scale properties rather than
+   one transform, so they run on different periods (53s against 19s) without
+   overwriting each other and stay out of phase for ~17 minutes. */
+.bubble {
+  width: 40vw; height: 30vw; left: 28%; top: 20%;
+  /* Each ellipse must reach zero inside the box, or the element's own rectangle
+     shows up as a hard edge. Centre +/- radius stays within 0..100% on both
+     axes, and the last stop sits at 100% so the fade ends at the ellipse. */
+  background:
+    radial-gradient(ellipse 40% 42% at 44% 44%,
+      rgba(232, 32, 48, 0.40), rgba(232, 32, 48, 0.16) 45%, rgba(232, 32, 48, 0) 100%),
+    radial-gradient(ellipse 40% 38% at 58% 58%,
+      rgba(224, 46, 76, 0.32), rgba(224, 46, 76, 0.12) 45%, rgba(224, 46, 76, 0) 100%);
+  /* Calmed: a small slow drift rather than a wide skate across the hero, so the
+     eye rests on the wordmark and the tonal wash carries the life instead. */
+  animation: bubble-path 120s ease-in-out infinite, bubble-breath 46s ease-in-out infinite;
+  animation-delay: -31s, -9s;
+  will-change: translate, scale;
+}
+
+/* Static desaturated turbulence: hides the banding that large soft gradients
+   produce, and keeps the field from reading as a smooth generic gradient. */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.30;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Irregular paths: the stops are deliberately uneven so a lobe drifts and
+   doubles back rather than sliding to a beat. */
+@keyframes wander-1 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  19%  { transform: translate3d(5vw, 3vh, 0) scale(1.08); }
+  37%  { transform: translate3d(-3vw, 7vh, 0) scale(0.94); }
+  58%  { transform: translate3d(7vw, -2vh, 0) scale(1.12); }
+  76%  { transform: translate3d(-4vw, 4vh, 0) scale(1.01); }
+  91%  { transform: translate3d(2vw, -5vh, 0) scale(0.97); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes wander-2 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  23%  { transform: translate3d(-6vw, 4vh, 0) scale(1.10); }
+  41%  { transform: translate3d(3vw, -3vh, 0) scale(0.96); }
+  62%  { transform: translate3d(-8vw, -5vh, 0) scale(1.06); }
+  84%  { transform: translate3d(4vw, 6vh, 0) scale(0.99); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes wander-3 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  17%  { transform: translate3d(6vw, -4vh, 0) scale(1.14); }
+  34%  { transform: translate3d(-5vw, -7vh, 0) scale(0.92); }
+  53%  { transform: translate3d(8vw, 5vh, 0) scale(1.07); }
+  71%  { transform: translate3d(-2vw, 8vh, 0) scale(1.03); }
+  88%  { transform: translate3d(5vw, 2vh, 0) scale(0.95); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes wander-4 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  21%  { transform: translate3d(-4vw, -6vh, 0) scale(1.05); }
+  46%  { transform: translate3d(7vw, 3vh, 0) scale(1.13); }
+  67%  { transform: translate3d(-6vw, 6vh, 0) scale(0.93); }
+  89%  { transform: translate3d(3vw, -4vh, 0) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+/* A long, lopsided circuit: never a centred orbit, and long enough that the
+   return to the start is not something you can sit and wait for. */
+@keyframes bubble-path {
+  0%   { translate: 0 0; }
+  25%  { translate: 5vw -3vh; }
+  50%  { translate: 8vw 4vh; }
+  75%  { translate: 2vw 6vh; }
+  100% { translate: 0 0; }
+}
+/* Squash and stretch on separate axes, so the mass keeps changing shape instead
+   of staying one blob that merely grows. Held to a narrow swing so it breathes
+   rather than pumps. */
+@keyframes bubble-breath {
+  0%   { scale: 1 1; }
+  50%  { scale: 1.05 0.97; }
+  100% { scale: 1 1; }
+}
+/* Narrow swings on purpose: the back should breathe, not blink. */
+@keyframes wane-a {
+  0%   { opacity: 0.80; }
+  23%  { opacity: 0.94; }
+  47%  { opacity: 0.74; }
+  71%  { opacity: 0.90; }
+  100% { opacity: 0.80; }
+}
+@keyframes wane-b {
+  0%   { opacity: 0.88; }
+  31%  { opacity: 0.76; }
+  59%  { opacity: 0.98; }
+  82%  { opacity: 0.82; }
+  100% { opacity: 0.88; }
+}
+@keyframes wane-c {
+  0%   { opacity: 0.76; }
+  19%  { opacity: 0.92; }
+  53%  { opacity: 0.70; }
+  78%  { opacity: 0.86; }
+  100% { opacity: 0.76; }
+}
+
+/* Hold the field still, but keep the composition. */
+@media (prefers-reduced-motion: reduce) {
+  .lobe { animation: none; }
+  .hero-aura { animation: none; }
+}
+/* ---- Street Machine wordmark ----
+   A faithful port of the CodePen "Street Machine" treatment, adapted from its
+   black-bg/white-text original to the site's white hero and coral red:
+     - "Super": blocky italic Candal, ink face, hard red offset drop shadow,
+       with two red "speed-line" bars underneath.
+     - "Red": Mr Dafoe cursive script, coral, tilted and overlapping the corner.
+   The two words scale together (shared vw term) so their overlap holds at any
+   width. This is the one place the site departs from Garamond, on purpose. */
+.hero .wordmark {
+  position: relative;
+  display: inline-block;
+  /* the tilted "Red" script descends well past the baseline; the bottom margin
+     clears it so the lead line below doesn't crowd the wordmark */
+  margin: 1.4rem 0 1.4rem;
+  padding: 0 1.6em 0.5em 0;
+}
+.hero .wm-super {
+  position: relative;
+  font-family: "Candal", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.8rem, 14vw, 9.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-shadow: -8px 8px 0 #ed2121;
+  -webkit-text-stroke: 0.5px #ed2121;
+}
+/* two clean red speed bars under "Super": no box-shadow doubling (that read as
+   extra stray lines). They echo the drop-shadow's down-left offset: the lower
+   bar sits a touch shorter and inset, so they read as motion lines, not a stack. */
+.hero .wm-super::before,
+.hero .wm-super::after {
+  content: "";
+  position: absolute;
+  height: 0.07em;
+  background: #ed2121;
+  border-radius: 999px;
+}
+.hero .wm-super::before { left: 0;      bottom: -0.08em; width: 88%; }
+.hero .wm-super::after  { left: -0.06em; bottom: -0.20em; width: 62%; }
+.hero .wm-red {
+  position: absolute;
+  right: 0;
+  bottom: -0.2em;
+  font-family: "Mr Dafoe", cursive;
+  font-weight: 400;
+  font-size: clamp(3.1rem, 11.2vw, 7.6rem);
+  line-height: 1;
+  color: #fc543e;
+  transform: rotate(-14deg);
+  text-shadow: 1px 2px 0 rgba(249, 210, 210, 0.9);
+  white-space: nowrap;
+}
+.hero .tagline {
+  color: var(--gray);
+  font-size: var(--fs-body);
+  margin: 0.6rem auto 0;
+  max-width: var(--container);
+}
+.hero .lead {
+  font-size: var(--fs-head);
+  margin: 1.8rem auto 0;
+  max-width: var(--container);
+}
+.hero .intro {
+  margin: 1.2rem auto 0;
+  max-width: var(--container);
+  font-size: var(--fs-body);
+  color: #333333;
+}
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 2.2rem;
+}
+/* click-to-copy pill: styled identically to the old code element, now a button
+   with a copy icon that flips to a check for ~1.6s after a successful copy */
+/* the install commands read as code in a dark terminal chip: a muted "$" prompt,
+   light mono text on near-black, with the copy affordance on the right */
+.hero-pip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: #e8e8e8;
+  background: #0e0e0e;
+  border: 1px solid #0e0e0e;
+  padding: 0.55rem 1.1rem 0.55rem 1.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+/* a dim shell prompt before the command */
+.hero-pip .pip-text::before { content: "$ "; color: #ed6b5c; }
+.hero-pip:hover { border-color: #2a2a2a; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.hero-pip:active { transform: translateY(0); }
+.hero-pip .pip-copy-icon {
+  display: inline-flex;
+  align-items: center;
+  color: #7d7d7d;
+  transition: color 160ms var(--ease);
+}
+.hero-pip:hover .pip-copy-icon { color: #e8e8e8; }
+.hero-pip .pip-ic-check { display: none; color: #7ee787; }
+.hero-pip.copied .pip-ic-copy { display: none; }
+.hero-pip.copied .pip-ic-check { display: inline; }
+.hero-pip.copied .pip-copy-icon { color: #7ee787; }
+
+/* tooltip above the pill: "Click to copy", flipping to "Copied!" after a copy */
+.hero-pip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  padding: 0.3rem 0.6rem;
+  font-family: var(--serif);
+  font-size: var(--fs-small);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 5px;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms var(--ease), transform 140ms var(--ease);
+}
+/* little arrow under the tooltip bubble */
+.hero-pip::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms var(--ease);
+}
+.hero-pip:hover::after, .hero-pip:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+.hero-pip:hover::before, .hero-pip:focus-visible::before { opacity: 1; }
+.hero-pip.copied::after { background: #2e9e4f; }
+.hero-pip.copied::before { border-top-color: #2e9e4f; }
+.cta-and, .cta-or { color: var(--gray); }
+.btn {
+  /* Same box model as .hero-pip so the CTA pill and button render at an
+     identical height: same display, alignment, line-height, padding, border. */
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.65;
+  padding: 0.55rem 1.4rem;
+  font-family: inherit;
+  font-size: var(--fs-body);
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  transition: background 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:hover { background: #000; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.btn-secondary { background: #fff; color: var(--ink); }
+.btn-secondary:hover { background: var(--code-bg); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+.scroll-hint {
+  margin-top: 3rem;
+  color: var(--gray);
+  font-size: var(--fs-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- two-column value props ---- */
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 2.5rem;
+}
+.two-col h3 { font-size: var(--fs-body); font-weight: 500; margin: 0 0 0.6rem; }
+.two-col p { margin: 0; }
+
+/* audience cards (meeting-point section): three role cards, each a lead pitch
+   over a ruled list of specifics. Imported from the Claude Design "Audience
+   Split", rebuilt on the site's tokens and two sizes (heading is --fs-body 500,
+   everything else --fs-body). The .audience prefix beats `.section p`. */
+.audience {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2.8rem;
+}
+.aud-card {
+  box-sizing: border-box;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 1.5rem 1.5rem 1.6rem;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.aud-card:hover {
+  border-color: #d8d8d8;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.audience .aud-title { margin: 0 0 0.7rem; font-size: var(--fs-body); font-weight: 500; line-height: 1.2; }
+.audience .aud-lead { margin: 0; font-size: var(--fs-body); line-height: 1.55; color: #333333; }
+.aud-rule { height: 1px; background: var(--line); margin: 1.2rem 0 1rem; }
+.aud-points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+.audience .aud-points li {
+  position: relative;
+  padding-left: 1.3rem;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: #333333;
+}
+.audience .aud-points li::before { content: "\2192"; position: absolute; left: 0; color: var(--gray); }
+.audience .aud-points li em { font-style: italic; }
+/* A "go" link pinned to the bottom of each audience card, matching the
+   doc-card arrows. The card is an <article>, not a link, so the arrow is its
+   own <a>: margin-top:auto pushes it to the box end and it warms as the card
+   lifts, exactly like .card .go. */
+.aud-card .go {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: var(--gray);
+  font-size: var(--fs-body);
+  text-decoration: none;
+  transition: color 160ms var(--ease);
+}
+.aud-card:hover .go { color: #ed2121; }
+
+/* ---- features grid ---- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 2.5rem;
+}
+/* No row rules: the threat-model card sits between the two rows and divides
+   them, so the old top-border separators are gone. */
+.feature h3 { font-size: var(--fs-body); font-weight: 500; margin: 0 0 0.4rem; }
+.feature p { margin: 0; font-size: var(--fs-body); color: #333; }
+
+/* ---- one-liner ---- */
+.oneliner {
+  text-align: center;
+}
+.oneliner p {
+  max-width: 58ch;
+  margin: 0 auto 1.2rem;
+  font-size: var(--fs-body);
+}
+
+/* Code blocks (.highlight) are styled once in site.css. */
+
+/* ---- documentation cards ---- */
+.doc-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.card {
+  display: block;
+  padding: 1.6rem 1.6rem 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.card:hover {
+  border-color: #d8d8d8;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.card h3 { font-size: var(--fs-body); font-weight: 500; margin: 0 0 0.5rem; }
+.card p { margin: 0 0 0.9rem; font-size: var(--fs-body); color: #333; }
+/* the "go" line warms as the card lifts */
+.card .go { color: var(--gray); font-size: var(--fs-body); transition: color 160ms var(--ease); }
+.card:hover .go { color: #ed2121; }
+
+/* Footer lives in site.css (shared across all pages). */
+
+/* ---- responsive ---- */
+@media (max-width: 720px) {
+  body { font-size: var(--fs-body); }
+  .two-col, .features, .doc-cards, .audience { grid-template-columns: 1fr; }
+  .section { padding: 3.2rem 1.25rem; }
+}
+
+/* inline code on landing pages */
+.section-body p code, .hero code {
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+/* compact, centered pip line in the hero */
+.hero .highlight { width: max-content; max-width: 100%; margin: 1.6rem auto 0.2rem; }
+
+/* ---- setup diagram ----
+   Imported from the Claude Design project, rebuilt rather than copied. The
+   source draws a fixed 1040x560 stage of absolutely-positioned boxes with
+   hard-coded px type, so the moment the stage is narrower than the width it was
+   drawn at the boxes shrink while the text does not, and it overflows. Here the
+   same picture is a content-sized grid: every box sizes to what it holds and
+   cannot break, and the connectors are pseudo-elements plus CSS triangles, so
+   there is no SVG to keep in sync.
+
+   Arrow labels, package tags and the legend are all off, which is what the
+   source itself declares as their defaults. Lives inside the Why section as its
+   opening figure. */
+.setup-diagram {
+  width: 100%;
+  max-width: 66rem;
+  margin: 0 0 2.6rem;
+}
+/* The figure lives inside .section, whose `.section p` rule is more specific
+   than a bare `.sd-name`, so without this every line in a box picks up a 1rem
+   bottom margin on top of the flex gap and the boxes fall apart. The gap alone
+   sets the spacing. */
+.setup-diagram p { margin: 0; }
+/* The border sits on this inner box, so the caption reads outside the frame. */
+.sd-box {
+  padding: 2.2rem 2rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.sd-box:hover { border-color: #d8d8d8; box-shadow: var(--shadow-md); transform: translateY(-3px); }
+/* the individual nodes lift a touch when you hover the diagram */
+.sd-node { transition: box-shadow 160ms var(--ease), transform 160ms var(--ease); }
+.sd-box:hover .sd-node { box-shadow: var(--shadow-sm); }
+
+.sd-grid {
+  display: grid;
+  /* Fixed connector columns: with the labels gone there is nothing to size them
+     from their content. */
+  grid-template-columns: 1fr 5rem 1.3fr 5rem 1fr;
+  /* Stretch, so the three boxes on the top row share one height and line up top
+     and bottom however much text each of them holds. */
+  align-items: stretch;
+}
+.sd-optimizer  { grid-column: 1; grid-row: 1; }
+.sd-edge-opt   { grid-column: 2; grid-row: 1; }
+.sd-controller { grid-column: 3; grid-row: 1; }
+.sd-edge-tgt   { grid-column: 4; grid-row: 1; }
+.sd-target     { grid-column: 5; grid-row: 1; }
+.sd-edge-claim { grid-column: 3; grid-row: 2; }
+.sd-claim      { grid-column: 3; grid-row: 3; }
+
+.sd-node {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.34rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+}
+/* The framework core, filled: the one piece you do not swap. */
+.sd-node-core {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+/* Two sizes only, like the rest of the site: --fs-head for the four names,
+   --fs-small for the kickers and descriptions. Nothing here invents a scale. */
+.sd-kicker {
+  margin: 0;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--gray);
+}
+.sd-node-core .sd-kicker { color: rgba(255, 255, 255, 0.62); }
+/* All four names at one size. The controller is set apart by its fill, not by
+   being bigger than everything around it. */
+.sd-name {
+  margin: 0;
+  font-size: var(--fs-head);
+  font-weight: 500;
+  line-height: 1.15;
+}
+.sd-desc {
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  color: #333333;
+}
+.sd-node-core .sd-desc { color: rgba(255, 255, 255, 0.78); }
+
+/* Connectors: the line is a pseudo-element and the heads are CSS triangles, so
+   the arrows follow the layout with no SVG to keep in sync. */
+.sd-edge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sd-edge-h::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem; right: 0.3rem; top: 50%;
+  height: 1px;
+  background: var(--ink);
+}
+.sd-edge-v { min-height: 3.4rem; }
+.sd-edge-v::before {
+  content: "";
+  position: absolute;
+  top: 0.3rem; bottom: 0.3rem; left: 50%;
+  width: 1px;
+  background: var(--ink);
+}
+.sd-head { position: absolute; width: 0; height: 0; border-style: solid; }
+.sd-head-start {
+  left: 0; top: 50%; transform: translateY(-50%);
+  border-width: 4px 5px 4px 0;
+  border-color: transparent var(--ink) transparent transparent;
+}
+.sd-head-end {
+  right: 0; top: 50%; transform: translateY(-50%);
+  border-width: 4px 0 4px 5px;
+  border-color: transparent transparent transparent var(--ink);
+}
+.sd-head-up {
+  top: 0; left: 50%; transform: translateX(-50%);
+  border-width: 0 4px 5px 4px;
+  border-color: transparent transparent var(--ink) transparent;
+}
+.sd-head-down {
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  border-width: 5px 4px 0 4px;
+  border-color: var(--ink) transparent transparent transparent;
+}
+
+
+/* A star cannot be stacked without implying a chain that is not there, so the
+   connectors drop and the filled core carries the structure. */
+@media (max-width: 860px) {
+  .sd-grid { grid-template-columns: 1fr; row-gap: 0.9rem; }
+  .sd-optimizer, .sd-controller, .sd-target, .sd-claim {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .sd-edge { display: none; }
+  .sd-box { padding: 1.4rem 1.2rem; }
+}
+
+/* ---- capability matrix ----
+   Imported from the Claude Design "Matrix Diagram". Unlike the setup diagram
+   this one is deliberately a fixed-size crop, not a complete picture: the grid
+   is wider and taller than its frame and is masked out to the right and bottom,
+   so it reads as a window onto a catalogue that keeps growing rather than a
+   table that stops. That is why the px sizing here is fine where it would not
+   be there: nothing is asked to reflow, it is asked to run off the edge.
+
+   Two sizes only: --fs-small for the headers, and the same 0.8rem mono the
+   module catalogue already uses for its package chips. */
+/* The right fade belongs to the frame, not the grid. As a percentage of the
+   952px grid it would start at 571px, so on any viewport narrower than that the
+   mask is still opaque where the frame clips and the table ends in a hard
+   vertical cut. On the frame it always fades at whatever edge you can see. */
+.mx-viewport {
+  position: relative;
+  width: 100%;
+  height: 510px;
+  margin-top: 2.4rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 60%, transparent 100%);
+}
+.mx-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: grid;
+  /* Target columns take whatever room the frame gives them, so the table always
+     reaches the right edge instead of stopping short on a wide screen. They
+     never go below their natural width though: on a frame narrower than the
+     tracks the grid overflows instead of crushing the cells, and the frame
+     clips and fades it. */
+  grid-template-columns: 160px repeat(6, minmax(132px, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  /* The bottom fade rides the grid, whose height is fixed and known. It has to
+     finish above .mx-viewport's height, or the frame clips a still-visible row
+     and the crop reads as a mistake rather than a fade. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 28%, transparent 62%);
+  mask-image: linear-gradient(to bottom, #000 28%, transparent 62%);
+}
+.mx-corner,
+.mx-col-head,
+.mx-row-head,
+.mx-cell {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.mx-corner,
+.mx-col-head { height: 52px; }
+.mx-row-head,
+.mx-cell { height: 50px; }
+.mx-col-head {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 9px 9px;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  line-height: 1.15;
+}
+.mx-row-head {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: var(--fs-small);
+  line-height: 1.1;
+}
+.mx-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 8px;
+  overflow: hidden;
+}
+.mx-claim {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 2px 6px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: #333333;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* One tint per security claim, so a repeated claim is recognisable down a
+   column without having to read it. Held at the edge of perceptible on purpose:
+   every tint sits at roughly the default chip's lightness and only the hue
+   moves, so the table stays a quiet grey field rather than becoming a chart.
+   The text keeps its own colour, so tinting never costs contrast. */
+.mx-c-harmbench     { background: #f9f0f1; border-color: #efe1e3; }
+.mx-c-strongreject  { background: #f9f2ec; border-color: #efe4d9; }
+.mx-c-sorry-bench   { background: #f8f4e9; border-color: #ece7d4; }
+.mx-c-agentharm     { background: #eff5ef; border-color: #e0eae0; }
+.mx-c-agentdojo     { background: #ecf4f3; border-color: #dbe9e7; }
+.mx-c-asb           { background: #eef2f8; border-color: #dee6f1; }
+.mx-c-decodingtrust { background: #f2eff8; border-color: #e4def1; }
+.mx-c-safeclawbench { background: #f8eff5; border-color: #eee0e9; }
+
+/* ---- threat-model triple (features section) ----
+   Imported from the Claude Design "Threat Model Triple": one card showing the
+   (scope, attacker LLM, budget) triple that fixes one threat model, resting on
+   two faint ghost cards, the "one of many" stack. The card is laid out in
+   normal flow at the content width; only the ghosts break that boundary, offset
+   up and right just far enough to peek into the gutter. Sits between the two
+   feature rows, replacing their separators. Two sizes only, --fs-body for the
+   emphasised values and --fs-small for the rest (mono chips use the same 0.8rem
+   as the module catalogue). */
+.tmt {
+  grid-column: 1 / -1;
+  position: relative;
+  margin: 0.3rem 0;
+}
+.tmt-ghost {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fafafa;
+}
+.tmt-ghost-1 { transform: translate(13px, -8px);  opacity: 0.6; }
+.tmt-ghost-2 { transform: translate(26px, -16px); opacity: 0.32; }
+
+.tmt-card {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 1.2rem 1.3rem;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.tmt-card:hover { border-color: #d8d8d8; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.tmt-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.tmt-eyebrow {
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.tmt-sig { font-family: var(--mono); font-size: 0.8rem; color: #333333; }
+
+.tmt-triple { display: flex; align-items: stretch; gap: 0; }
+.tmt-facet {
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 0.85rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.tmt-scope { flex: 1.55; min-width: 0; }   /* room for the boundary tree */
+.tmt-llm, .tmt-budget { flex: 1; min-width: 0; }
+.tmt-x {
+  flex: none;
+  width: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-body);
+  color: var(--gray);
+}
+.tmt-facet-label {
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.tmt-facet-sub { font-size: var(--fs-small); color: #333333; margin-top: -0.3rem; }
+.tmt-value {
+  font-family: var(--mono);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.tmt-per { font-family: var(--serif); font-size: var(--fs-small); font-weight: 400; color: var(--gray); }
+.tmt-tree {
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  background: var(--code-bg);
+  padding: 0.5rem 0.55rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink);
+  white-space: pre;
+  overflow-x: auto;
+}
+.tmt-tree-muted {
+  border-color: transparent;
+  background: none;
+  padding: 0 0.65rem;
+  color: var(--gray);
+}
+/* .tmt prefix so these beat `.section p { margin: 0 0 1rem }`, which would
+   otherwise reset the margins and stop tmt-foot pinning to the bottom. */
+.tmt .tmt-note {
+  margin: 0;
+  font-style: italic;
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  color: var(--gray);
+}
+.tmt-note code { font-family: var(--mono); font-size: 0.8rem; font-style: normal; }
+.tmt .tmt-foot { margin-top: auto; }   /* pin the caption to the box bottom */
+.tmt-grants { margin-top: 0.1rem; }
+.tmt-grants-label { display: block; font-size: var(--fs-small); color: #333333; margin-bottom: 0.4rem; }
+.tmt-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tmt-chip {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #333333;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+.tmt-alts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--gray);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+}
+
+/* Stack the triple when the row no longer fits, and pull the ghost offsets in
+   so they still only peek (never past the viewport at the smaller gutter). */
+@media (max-width: 860px) {
+  .tmt-triple { flex-direction: column; }
+  .tmt-x { width: auto; height: 1.5rem; }
+  .tmt .tmt-foot { margin-top: 0; }
+  .tmt-ghost-1 { transform: translate(8px, -6px); }
+  .tmt-ghost-2 { transform: translate(16px, -12px); }
+}
+
+/* The results-report screenshot, framed like the diagram above it and spanning
+   the full features width below the second row. */
+.results-shot {
+  grid-column: 1 / -1;
+  margin: 0.3rem 0 0;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0.55rem;
+  overflow: hidden;
+  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.results-shot:hover { border-color: #d8d8d8; box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.results-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* ---- runnable demo ----
+   The getting-started code sample, with a Run button and a terminal-style
+   output panel. The "run" is a scripted simulation played out by a small inline
+   script (no backend, no code execution): it types the attack loop and ends on
+   a result echoing the real dashboard numbers. Styled on the site's tokens so
+   it reads as part of the page, not a widget bolted on. */
+/* One framed box with Code / Output tabs and a Run button. Clicking Run flips
+   to the Output tab and plays the simulated run; you can tab back to the code.
+   A single box means no two-column squeeze on laptop widths. */
+.runnable {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1.4rem 0;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 160ms var(--ease);
+}
+.runnable:hover { box-shadow: var(--shadow-md); }
+.runnable-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.runnable-tab {
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  color: var(--gray);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.6rem 1.1rem;
+  margin-bottom: -1px;   /* sit the active underline on the tab-strip border */
+  cursor: pointer;
+}
+.runnable-tab:hover { color: var(--ink); }
+.runnable-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: #ed2121; }
+/* Run sits at the right end of the tab strip. */
+.runnable-tabs .runnable-run { margin-left: auto; align-self: center; margin-right: 0.55rem; }
+
+.runnable-panel { min-width: 0; }
+.runnable-panel[hidden] { display: none; }
+/* fold the shared .highlight margins so the code sits flush inside the frame */
+.runnable .highlight { margin: 0; }
+.runnable .highlight pre { border: none; border-radius: 0; padding: 0.9rem 1.05rem; min-width: 0; }
+.runnable-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  color: #fff;
+  background: #ed2121;
+  border: 1px solid #ed2121;
+  border-radius: 5px;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+  transition: background 160ms var(--ease), border-color 160ms var(--ease), box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+.runnable-run:hover { background: #d31414; border-color: #d31414; box-shadow: var(--shadow-red); transform: translateY(-1px); }
+.runnable-run:active { transform: translateY(0); }
+.runnable-run .rr-icon { transition: transform 200ms var(--ease); }
+.runnable-run:hover .rr-icon { transform: scale(1.15); }
+.runnable-run:disabled { opacity: 0.6; cursor: default; }
+.runnable-run .rr-icon { font-size: 0.8em; line-height: 1; }
+.runnable-hint { font-size: var(--fs-small); color: var(--gray); }
+.runnable-out {
+  margin: 0;
+  background: #0e0e0e;
+  color: #d6d6d6;
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  padding: 0.9rem 1.05rem;
+  min-height: 15rem;
+  max-height: 26rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+/* the idle state reads as a dim comment until Run is pressed */
+.runnable-out { color: #6b6b6b; }
+.runnable-out .o-cmd  { color: #d6d6d6; }
+.runnable-out .o-dim  { color: #7d7d7d; }
+.runnable-out .o-atk  { color: #ff8a7a; }   /* attacker, coral */
+.runnable-out .o-tgt  { color: #9ecbff; }   /* target, cool blue */
+.runnable-out .o-lo   { color: #8a8f98; }
+.runnable-out .o-mid  { color: #e6c07b; }   /* climbing score, amber */
+.runnable-out .o-hi   { color: #ff6b57; }   /* high score, red */
+.runnable-out .o-bar  { color: #ed6b5c; letter-spacing: -0.02em; }
+.runnable-out .o-done { color: #7ee787; }   /* success green */
+/* each line eases in as it is printed, so the run reads as a smooth stream */
+.runnable-out > div { animation: line-in 220ms var(--ease) both; }
+@keyframes line-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .runnable-out > div { animation: none; }
+}
+
+/* ---- used-by marquee ----
+   A seamless auto-scrolling strip of institution wordmarks above the footer.
+   The track holds two identical copies of the set and translates left by
+   exactly half its width, so the loop is invisible. Edge-fade masks let logos
+   dissolve in and out at the margins. Hover pauses the scroll and colours the
+   hovered mark. Plain text wordmarks (not brand logo files) keep it on the
+   site's type system and sidestep trademark-asset misuse. */
+.usedby {
+  padding: 3.2rem var(--gutter) 3.6rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  overflow: hidden;
+}
+.usedby-kicker {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 1.8rem;
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  cursor: help;
+  transition: color 160ms var(--ease);
+}
+.usedby-kicker:hover { color: var(--ink); }
+/* the disclaimer, revealed as a tooltip above the kicker on hover/focus */
+.usedby-kicker::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  width: max-content;
+  max-width: 22rem;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--serif);
+  font-size: var(--fs-small);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.4;
+  white-space: normal;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 6px;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms var(--ease), transform 140ms var(--ease);
+}
+.usedby-kicker::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms var(--ease);
+}
+.usedby-kicker:hover::after, .usedby-kicker:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+.usedby-kicker:hover::before, .usedby-kicker:focus-visible::before { opacity: 1; }
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* vertical room so the hover raise on a logo is not clipped by overflow */
+  padding: 0.5rem 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+.marquee-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  width: max-content;
+  animation: marquee-scroll 46s linear infinite;
+  will-change: transform;
+}
+/* Uniform spacing via per-item margin (NOT flex `gap`): gap adds space only
+   between items, so at the -50% loop seam the last item of copy A would butt
+   against the first of copy B with no space, causing a visible hitch. Equal
+   side margins keep the rhythm identical across the seam, so the loop is truly
+   endless. Translating exactly -50% lands on the matching item every cycle. */
+.marquee-track .ub-logo { margin: 0 clamp(1.2rem, 3vw, 2.5rem); }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-25%, 0, 0); }   /* one of four copies = one full set */
+}
+/* Real brand logo SVGs (official marks, bundled under assets/img/logos). They
+   rest desaturated so the strip reads as one calm row, then bloom into full
+   brand colour and lift on hover. Normalised by height; per-brand heights tuned
+   so the differently-proportioned marks share one optical weight. */
+.ub-logo {
+  display: block;
+  width: auto;
+  flex: none;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition: filter 220ms var(--ease), opacity 220ms var(--ease), transform 220ms var(--ease);
+}
+.ub-logo:hover { filter: grayscale(0); opacity: 1; transform: translateY(-2px); }
+/* icon-ish / compact marks a touch taller than the long wordmarks */
+.ub-aws      { height: 2.5rem; }
+.ub-eth      { height: 1.5rem; }
+.ub-berkeley { height: 2.6rem; }
+/* long wordmarks kept shorter so their optical size matches */
+.ub-google   { height: 1.7rem; }
+.ub-meta     { height: 1.6rem; }
+@media (prefers-reduced-motion: reduce) {
+  /* Hold the strip still and let it wrap to a static, centered set. */
+  .marquee { -webkit-mask-image: none; mask-image: none; }
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    white-space: normal;
+    width: auto;
+    gap: 1.4rem 2.6rem;
+  }
+}

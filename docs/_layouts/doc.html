@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% include head-meta.html %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  {% include site-header.html %}
+
+  {%- comment -%} Flatten the nav into one ordered sequence, then find prev/next. {%- endcomment -%}
+  {% assign flat = "" | split: "" %}
+  {% for section in site.data.nav %}{% assign flat = flat | concat: section.items %}{% endfor %}
+  {% assign prev = null %}
+  {% assign nxt = null %}
+  {% assign found = false %}
+  {% for item in flat %}
+    {% if found and nxt == null %}{% assign nxt = item %}{% endif %}
+    {% if item.url == page.url %}{% assign found = true %}{% endif %}
+    {% unless found %}{% assign prev = item %}{% endunless %}
+  {% endfor %}
+
+  <div class="layout">
+    <aside class="sidebar">
+      <details class="nav-disclosure" open>
+        <summary>Menu</summary>
+        <nav>
+          {% for section in site.data.nav %}
+          <p class="nav-section">{{ section.title }}</p>
+          <ul>
+            {% for item in section.items %}
+            <li>
+              <a href="{{ item.url }}"{% if item.url == page.url %} class="active" aria-current="page"{% endif %}>{{ item.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endfor %}
+        </nav>
+      </details>
+    </aside>
+
+    <main class="content">
+      {%- comment -%} Only pages that live in the nav get a prev/next pager;
+      off-nav pages (e.g. the per-version migration subpages) get none. {%- endcomment -%}
+      {% if found %}{% include pager.html cls="pager-top" %}{% endif %}
+      {{ content }}
+      {% if found %}{% include pager.html cls="pager-bottom" %}{% endif %}
+    </main>
+  </div>
+  {% include site-footer.html %}
+</body>
+</html>

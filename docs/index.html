@@ -1,0 +1,538 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% include head-meta.html
+     title="SuperRed: Open-source AI red-teaming and AI system security framework"
+     description="SuperRed is a modular Python framework for red-teaming AI systems: run any attacker against any AI system under any threat model, and score it on standard safety benchmarks." %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Candal&family=Mr+Dafoe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/home.css">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+  {% include site-header.html %}
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-aura" aria-hidden="true">
+      <span class="lobe lobe-1"></span>
+      <span class="lobe lobe-2"></span>
+      <span class="lobe lobe-3"></span>
+      <span class="lobe lobe-4"></span>
+      <span class="lobe bubble"></span>
+      <span class="hero-grain"></span>
+    </div>
+    <h1 class="wordmark"><span class="wm-super">Super</span><span class="wm-red">Red</span></h1>
+    <p class="lead">Run <strong>any attacker</strong> against <strong>any AI system</strong> with <strong>any threat model</strong></p>
+    <div class="cta">
+      <button type="button" class="hero-pip" data-copy="pip install superred" data-tip="Click to copy" aria-label="Copy: pip install superred">
+        <span class="pip-text">pip install superred</span>
+        <span class="pip-copy-icon" aria-hidden="true">
+          <svg class="pip-ic-copy" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <svg class="pip-ic-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+      </button>
+      <span class="cta-or">or</span>
+      <button type="button" class="hero-pip" data-copy="uv tool install superred" data-tip="Click to copy" aria-label="Copy: uv tool install superred">
+        <span class="pip-text">uv tool install superred</span>
+        <span class="pip-copy-icon" aria-hidden="true">
+          <svg class="pip-ic-copy" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <svg class="pip-ic-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+      </button>
+      <span class="cta-and">and</span>
+      <a class="btn btn-primary" href="/guide/">Get started</a>
+    </div>
+  </section>
+
+  <!-- ===== INTRO: centered pull-quote opening the page ===== -->
+  <section class="section intro-quote" id="intro">
+    <p class="intro-lede">SuperRed is an open-source framework for <strong>red-teaming AI systems</strong> (chatbots, agents, assistants): deliberately attacking them to see which <strong>security properties</strong> can be violated. It keeps the attacker, the system under test, and the benchmark that scores the outcome as separate, <strong>interchangeable modules</strong>.<br>The framework allows red-teamers to implement <strong>powerful, reusable strategies</strong>, system builders to easily <strong>test systems</strong>, and evaluators to <strong>measure any combination of attack and target</strong>. Each run is governed by a <strong>fine-grained threat model</strong>: the attacker's model and per-task budget, the scope of trust boundaries it may observe and control, and whether it receives the benchmark's feedback. The framework provides ready-to-use <strong>metrics and result dashboards</strong>.</p>
+  </section>
+
+  <!-- ===== WHY: the gap it closes ===== -->
+  <section class="section" id="why">
+    <div class="section-head">
+    <p class="eyebrow">Why SuperRed</p>
+    <h2>Attacks, systems, and benchmarks, freely composable</h2>
+    </div>
+    <div class="section-body">
+    <figure class="setup-diagram">
+        <div class="sd-box">
+          <div class="sd-grid">
+
+            <div class="sd-node sd-optimizer">
+              <p class="sd-kicker">Module &middot; Attacker</p>
+              <p class="sd-name">Optimizer</p>
+              <p class="sd-desc">Drives the attack.</p>
+            </div>
+
+            <div class="sd-edge sd-edge-h sd-edge-opt" aria-hidden="true">
+              <span class="sd-head sd-head-start"></span>
+              <span class="sd-head sd-head-end"></span>
+            </div>
+
+            <div class="sd-node sd-node-core sd-controller">
+              <p class="sd-kicker">Framework</p>
+              <p class="sd-name">Controller</p>
+              <p class="sd-desc">Orchestrates the run and enforces the security scope.</p>
+            </div>
+
+            <div class="sd-edge sd-edge-h sd-edge-tgt" aria-hidden="true">
+              <span class="sd-head sd-head-start"></span>
+              <span class="sd-head sd-head-end"></span>
+            </div>
+
+            <div class="sd-node sd-target">
+              <p class="sd-kicker">Module &middot; System</p>
+              <p class="sd-name">Target</p>
+              <p class="sd-desc">The AI system under test.</p>
+            </div>
+
+            <div class="sd-edge sd-edge-v sd-edge-claim" aria-hidden="true">
+              <span class="sd-head sd-head-up"></span>
+              <span class="sd-head sd-head-down"></span>
+            </div>
+
+            <div class="sd-node sd-claim">
+              <p class="sd-kicker">Module &middot; Benchmark</p>
+              <p class="sd-name">Security claim</p>
+              <p class="sd-desc">Defines the goal, scores the run.</p>
+            </div>
+
+          </div>
+        </div>
+      </figure>
+
+    <p>Attacks and benchmarks live in one-off codebases, each wired to the system it was first demonstrated on. SuperRed pulls the pieces apart: the optimizer, target, and security claim are interchangeable modules that meet only at the controller. Swap any one and the comparison becomes a change of a single argument, not a re-implementation project.</p>
+    </div>
+  </section>
+
+  <!-- ===== SHOWCASE ===== -->
+  <section class="section" id="showcase">
+    <div class="section-head">
+    <p class="eyebrow">Showcase</p>
+    <h2>Ready-made attackers, targets, and benchmarks, plus the research built on them</h2>
+    </div>
+    <div class="section-body">
+    <div class="doc-cards">
+      <a class="card" href="/modules">
+        <h3>Attacks, targets, and benchmarks, ready to run</h3>
+        <p>Over a dozen faithfully implemented attacks, including AutoDAN-Turbo, PAIR, TAP, Crescendo, and AgentVigil, alongside targets and safety benchmarks such as HarmBench, DecodingTrust, and AgentDojo.</p>
+        <span class="go">Browse the modules &rarr;</span>
+      </a>
+      <a class="card" href="/research">
+        <h3>Research built with SuperRed</h3>
+        <p>From new attack strategies to full system evaluations, SuperRed is the substrate researchers and builders use to do serious red-teaming work.</p>
+        <span class="go">See the research &rarr;</span>
+      </a>
+    </div>
+
+    <!-- Capability matrix: rows are optimizers, columns are targets, cells are
+         the claims that score the pairing. The grid is wider and taller than its
+         frame on purpose and fades out, so it reads as a window onto a catalogue
+         that keeps growing rather than a table that ends. -->
+    {% assign mx = site.data.matrix %}
+    <div class="mx-viewport" aria-hidden="true">
+      <div class="mx-grid">
+        <div class="mx-corner"></div>
+        {% for t in mx.targets %}
+          <div class="mx-col-head">{{ t.name }}</div>
+        {% endfor %}
+
+        {% for opt in mx.optimizers %}
+          {% assign ri = forloop.index0 %}
+          <div class="mx-row-head">{{ opt }}</div>
+          {% for t in mx.targets %}
+            {% assign k = ri | plus: forloop.index0 %}
+            {% assign n = t.claims | size %}
+            <div class="mx-cell">
+              {% if n == 1 %}
+                {% assign c1 = t.claims[0] %}
+                <span class="mx-claim mx-c-{{ c1 | slugify }}">{{ c1 }}</span>
+              {% else %}
+                {% assign i1 = k | modulo: n %}
+                {% assign k2 = k | plus: 1 %}
+                {% assign i2 = k2 | modulo: n %}
+                {% assign c1 = t.claims[i1] %}
+                {% assign c2 = t.claims[i2] %}
+                <span class="mx-claim mx-c-{{ c1 | slugify }}">{{ c1 }}</span>
+                <span class="mx-claim mx-c-{{ c2 | slugify }}">{{ c2 }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== VALUE PROPOSITION ===== -->
+  <section class="section" id="who">
+    <div class="section-head">
+    <p class="eyebrow">A meeting point</p>
+    <h2>Attackers, targets, and benchmarks are all first-class</h2>
+    </div>
+    <div class="section-body">
+    <p>Attack, system, and benchmark are the same kind of thing here: interchangeable modules. Hold any one fixed to evaluate it; every contribution strengthens a shared toolbox.</p>
+    <div class="audience">
+      <a class="aud-card" href="/guide/writing-an-optimizer">
+        <h3 class="aud-title">For red-teamers</h3>
+        <p class="aud-lead">An interactive environment for developing attacks, so you can build and score novel strategies on real environments as you go.</p>
+        <div class="aud-rule"></div>
+        <ul class="aud-points">
+          <li>Powerful attackers of every kind: deterministic to agentic, fixed strategies to RL.</li>
+          <li>Iterate against many targets as you build, and evaluate on standard benchmarks in a few lines.</li>
+        </ul>
+        <span class="go">Write an optimizer &rarr;</span>
+      </a>
+      <a class="aud-card" href="/guide/writing-a-target">
+        <h3 class="aud-title">For system builders</h3>
+        <p class="aud-lead">Declare your system's trust boundaries once, then see exactly which attacks succeed at each level of access.</p>
+        <div class="aud-rule"></div>
+        <ul class="aud-points">
+          <li>Test any kind of target: fixed-response fixtures, simulated environments, sandboxes, or live deployments.</li>
+          <li>Wrap an existing system as a target; porting is straightforward.</li>
+        </ul>
+        <span class="go">Write a target &rarr;</span>
+      </a>
+      <a class="aud-card" href="/guide/writing-tasks">
+        <h3 class="aud-title">For evaluators</h3>
+        <p class="aud-lead">Package a benchmark once as a security claim, then score any attacker against any target, or reuse the ones already ported.</p>
+        <div class="aud-rule"></div>
+        <ul class="aud-points">
+          <li>Benchmark under many threat models for fine-grained, <em>comparable</em> insight, not assumptions that vary from benchmark to benchmark.</li>
+          <li>Score deterministically or agentically, whichever the benchmark calls for.</li>
+        </ul>
+        <span class="go">Write a task &rarr;</span>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="section" id="features">
+    <div class="section-head">
+    <p class="eyebrow">High-level features</p>
+    <h2>What the framework gives you</h2>
+    </div>
+    <div class="section-body">
+    <div class="features">
+      <div class="feature">
+        <h3>Flexible threat models</h3>
+        <p>Switch on exactly the capabilities the attacker gets, from a single injected prompt up to full compromise, and change them between runs.</p>
+      </div>
+      <div class="feature">
+        <h3>Fair and reproducible</h3>
+        <p>A fixed model and a per-task cost budget bound every attacker equally.</p>
+      </div>
+
+      <!-- Threat-model triple: one experiment fixes a (scope, attacker LLM,
+           budget) triple; change any one for a new threat model. The main card
+           sits in normal flow at the content width; the two ghost cards behind
+           it (the "one of many" stack) are the only thing allowed to break the
+           content boundary, and only minimally. Sits between the feature rows,
+           replacing the row separators. -->
+      <div class="tmt">
+        <div class="tmt-ghost tmt-ghost-2" aria-hidden="true"></div>
+        <div class="tmt-ghost tmt-ghost-1" aria-hidden="true"></div>
+        <div class="tmt-card">
+          <div class="tmt-head">
+            <span class="tmt-eyebrow">One threat model</span>
+            <span class="tmt-sig">(scope, llm, budget)</span>
+          </div>
+          <div class="tmt-triple">
+            <div class="tmt-facet tmt-scope">
+              <span class="tmt-facet-label">Scope</span>
+              <span class="tmt-facet-sub">the system's trust boundaries</span>
+<pre class="tmt-tree">system
+├─ system_prompt
+├─ model_responses
+└─ architecture
+   └─ high_level_architecture</pre>
+<pre class="tmt-tree tmt-tree-muted">user
+…</pre>
+              <p class="tmt-note">the trust boundaries the attacker may cross: here, the <code>system</code> boundary and everything under it (read &amp; write)</p>
+              <div class="tmt-grants">
+                <span class="tmt-grants-label">grants the attacker access to</span>
+                <span class="tmt-chips">
+                  <span class="tmt-chip">controllables</span>
+                  <span class="tmt-chip">observables</span>
+                  <span class="tmt-chip">feedback</span>
+                </span>
+              </div>
+            </div>
+            <span class="tmt-x" aria-hidden="true">&times;</span>
+            <div class="tmt-facet tmt-llm">
+              <span class="tmt-facet-label">Attacker LLM</span>
+              <span class="tmt-value">gpt-5.5</span>
+              <span class="tmt-alts">
+                <span>mythos-5</span>
+                <span>claude-opus-4.5</span>
+                <span>gemini-3-pro</span>
+                <span>llama-4-405b</span>
+              </span>
+              <p class="tmt-note tmt-foot">the fixed model the attacker may call</p>
+            </div>
+            <span class="tmt-x" aria-hidden="true">&times;</span>
+            <div class="tmt-facet tmt-budget">
+              <span class="tmt-facet-label">Budget</span>
+              <span class="tmt-value">$5.00 <span class="tmt-per">/ task</span></span>
+              <span class="tmt-alts">
+                <span>$1.00</span>
+                <span>$20.00</span>
+                <span>$100.00</span>
+                <span>unlimited</span>
+              </span>
+              <p class="tmt-note tmt-foot">a per-task cost cap on LLM spend</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature">
+        <h3>Metrics and reports</h3>
+        <p>Every run records its model, cost, and success rate to a report.</p>
+      </div>
+      <div class="feature">
+        <h3>Built to scale</h3>
+        <p>Run many threat models in parallel, each against its own instance of the system.</p>
+      </div>
+
+      <!-- The report SuperRed writes for one threat model, framed like the
+           diagram above. -->
+      <figure class="results-shot">
+        <img src="/assets/img/results-dashboard.png" width="1999" height="1319" loading="lazy"
+             alt="SuperRed results report for a HarmBench threat model: 42% attack success rate over 5 of 12 goals, mean score 0.57, max 0.94, $11.23 optimizer spend, run-outcome breakdown, and a table of per-task goals with outcomes, best scores, runs, and cost.">
+      </figure>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== GETTING STARTED ===== -->
+  <section class="section start" id="start">
+    <div class="section-head">
+    <p class="eyebrow">Easy to get started</p>
+    <h2>Install, write a short script, run an evaluation</h2>
+    </div>
+    <div class="section-body">
+    <p>Point an attacker at a target, choose what counts as broken, and say what the attacker may control:</p>
+    <div class="runnable" id="demo" data-view="code">
+      <div class="runnable-tabs" role="tablist" aria-label="Example">
+        <button type="button" class="runnable-tab" id="tab-code" role="tab" aria-controls="panel-code" aria-selected="true" data-view="code">Code</button>
+        <button type="button" class="runnable-tab" id="tab-output" role="tab" aria-controls="panel-output" aria-selected="false" data-view="output">Output</button>
+        <button type="button" class="runnable-run" id="demo-run" aria-controls="panel-output">
+          <span class="rr-icon" aria-hidden="true">&#9654;</span> Run
+        </button>
+      </div>
+      <div class="runnable-panels">
+        <div class="runnable-panel runnable-code" id="panel-code" role="tabpanel" aria-labelledby="tab-code">
+{% highlight python %}
+chatbot = lambda: ChatbotTarget(model="gpt-4o-mini", api_key=key)
+
+controller = Controller(
+    optimizer_factory=lambda: PAIROptimizer(),           # the attacker
+    target_factory=TargetFactory(create=chatbot),        # the system under test
+    security_claim=harmbench_claim(),                    # what counts as broken
+    scope=frozenset({USER_TAG}),                         # the attacker's capabilities
+    llm_config=LLMConfig(model="gpt-4o", api_key=key),   # the attacker's model
+    task_cost_cap_usd=5.0,                               # per-task attacker budget (USD)
+)
+await controller.run()
+{% endhighlight %}
+        </div>
+        <pre class="runnable-panel runnable-out" id="panel-output" role="tabpanel" aria-labelledby="tab-output" aria-live="polite" hidden></pre>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.2rem"><a href="/guide/">The full walk-through, in the guide &rarr;</a></p>
+    </div>
+  </section>
+
+  <!-- ===== DOCUMENTATION ===== -->
+  <section class="section" id="docs">
+    <div class="section-head">
+    <p class="eyebrow">Documentation</p>
+    <h2>Two ways in</h2>
+    </div>
+    <div class="section-body">
+    <div class="doc-cards">
+      <a class="card" href="/guide/">
+        <h3>Guide</h3>
+        <p>Hands-on and example-driven: getting started, the core concepts of models and events, and worked examples. Start here.</p>
+        <span class="go">Open the guide &rarr;</span>
+      </a>
+      <a class="card" href="/reference/">
+        <h3>Reference</h3>
+        <p>The framework interfaces in technical detail: the controller, optimizer, target, task, security claim, and core types.</p>
+        <span class="go">Open the reference &rarr;</span>
+      </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== USED BY ===== -->
+  <!-- Honest framing: individuals (researchers, students, engineers) from these
+       orgs use SuperRed, not an institutional license or endorsement. The
+       heading attributes to people, and the marks are plain text wordmarks
+       (not official brand logo files) to avoid misusing trademarked assets. -->
+  <section class="usedby" id="usedby" aria-label="Who uses SuperRed">
+    <p class="usedby-kicker" tabindex="0" data-tip="Named individuals, not institutional endorsements.">Used by researchers from</p>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        {%- comment -%}
+          Brand-styled text logos (not official logo files). The set is
+          repeated four times so the track always stays wider than the viewport
+          and the -25% loop is seamless. Captured in a snippet so every copy
+          stays identical.
+        {%- endcomment -%}
+        {% capture ub_set %}
+          <img class="ub-logo ub-aws" src="/assets/img/logos/aws.svg" alt="AWS" width="101" height="60" loading="lazy">
+          <img class="ub-logo ub-google" src="/assets/img/logos/google.svg" alt="Google" width="178" height="60" loading="lazy">
+          <img class="ub-logo ub-eth" src="/assets/img/logos/eth.svg" alt="ETH Zürich" width="360" height="60" loading="lazy">
+          <img class="ub-logo ub-berkeley" src="/assets/img/logos/berkeley.svg" alt="UC Berkeley" width="191" height="60" loading="lazy">
+          <img class="ub-logo ub-meta" src="/assets/img/logos/meta.svg" alt="Meta" width="298" height="60" loading="lazy">
+        {% endcapture %}
+        {{ ub_set }}{{ ub_set }}{{ ub_set }}{{ ub_set }}
+      </div>
+    </div>
+  </section>
+
+  {% include site-footer.html %}
+
+  <!-- Runnable demo: a scripted, honest simulation of what a real superred run
+       looks like. No backend, no code execution; the lines are pre-written and
+       typed out to convey the attack loop (attacker → target → score → result).
+       Respects prefers-reduced-motion by rendering the final state at once. -->
+  <script>
+  (function () {
+    var demo = document.getElementById('demo');
+    var btn = document.getElementById('demo-run');
+    var out = document.getElementById('panel-output');
+    var codePanel = document.getElementById('panel-code');
+    var tabCode = document.getElementById('tab-code');
+    var tabOut = document.getElementById('tab-output');
+    if (!demo || !btn || !out) return;
+
+    // Tabs: swap which panel shows and reflect state for assistive tech.
+    function show(view) {
+      var showOut = view === 'output';
+      demo.setAttribute('data-view', view);
+      out.hidden = !showOut;
+      codePanel.hidden = showOut;
+      tabOut.setAttribute('aria-selected', showOut ? 'true' : 'false');
+      tabCode.setAttribute('aria-selected', showOut ? 'false' : 'true');
+    }
+    tabCode.addEventListener('click', function () { show('code'); });
+    tabOut.addEventListener('click', function () { show('output'); });
+
+    // Each step: text line, and how it renders. `bar` grows a progress meter.
+    var script = [
+      { t: '$ python evaluate.py', cls: 'o-cmd', pause: 320 },
+      { t: 'superred · controller starting', cls: 'o-dim', pause: 260 },
+      { t: 'scope = {user} · llm = gpt-4o · budget = $5.00 / task', cls: 'o-dim', pause: 420 },
+      { t: '', pause: 120 },
+      { t: '→ PAIR attempt 1/5 · crafting adversarial prompt…', cls: 'o-atk', pause: 520 },
+      { t: '← target (gpt-4o-mini): "I can’t help with that."', cls: 'o-tgt', pause: 300 },
+      { t: '  harmbench score 0.08', cls: 'o-lo', bar: 0.08, pause: 460 },
+      { t: '→ PAIR attempt 3/5 · refining with feedback…', cls: 'o-atk', pause: 520 },
+      { t: '← target: partial compliance', cls: 'o-tgt', pause: 300 },
+      { t: '  harmbench score 0.61', cls: 'o-mid', bar: 0.61, pause: 520 },
+      { t: '→ PAIR attempt 5/5 · escalating…', cls: 'o-atk', pause: 500 },
+      { t: '← target: goal reached', cls: 'o-tgt', pause: 300 },
+      { t: '  harmbench score 0.94', cls: 'o-hi', bar: 0.94, pause: 560 },
+      { t: '', pause: 160 },
+      { t: '✓ run complete · ASR 42% (5/12 goals) · spend $1.87 / $5.00', cls: 'o-done', pause: 0 }
+    ];
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function barLine(score) {
+      var width = 24, filled = Math.round(score * width);
+      var pct = Math.round(score * 100);
+      return '  [' + Array(filled + 1).join('▮') + Array(width - filled + 1).join('░') + '] ' + pct + '%';
+    }
+
+    function line(step) {
+      var div = document.createElement('div');
+      if (step.cls) div.className = step.cls;
+      div.textContent = step.t;
+      out.appendChild(div);
+      if (typeof step.bar === 'number') {
+        var b = document.createElement('div');
+        b.className = 'o-bar';
+        b.textContent = barLine(step.bar);
+        out.appendChild(b);
+      }
+      out.scrollTop = out.scrollHeight;
+    }
+
+    function reset() { out.textContent = ''; }
+
+    function runAll() {
+      show('output');           // flip to the Output tab, then play the run
+      btn.disabled = true;
+      reset();
+      if (reduce) {
+        script.forEach(line);
+        finish();
+        return;
+      }
+      var i = 0;
+      (function next() {
+        if (i >= script.length) { finish(); return; }
+        var step = script[i++];
+        line(step);
+        setTimeout(next, step.pause);
+      })();
+    }
+
+    function finish() {
+      btn.disabled = false;
+      btn.querySelector('.rr-icon').innerHTML = '&#8635;';
+      btn.childNodes[btn.childNodes.length - 1].nodeValue = ' Run again';
+    }
+
+    btn.addEventListener('click', runAll);
+  })();
+  </script>
+
+  <!-- Click-to-copy for the install pills. -->
+  <script>
+  (function () {
+    var pips = document.querySelectorAll('.hero-pip[data-copy]');
+    pips.forEach(function (pip) {
+      var reset;
+      var defaultTip = pip.getAttribute('data-tip') || 'Click to copy';
+      pip.addEventListener('click', function () {
+        var text = pip.getAttribute('data-copy');
+        var done = function () {
+          pip.classList.add('copied');
+          pip.setAttribute('data-tip', 'Copied!');
+          clearTimeout(reset);
+          reset = setTimeout(function () {
+            pip.classList.remove('copied');
+            pip.setAttribute('data-tip', defaultTip);
+          }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta); done();
+        }
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+/* Shared site chrome (header) used by every page: the landing page, the docs
+   layout, and standalone pages. Relies on the design tokens (--ink, --gray,
+   --line) declared in whichever base stylesheet the page also loads
+   (home.css or style.css). Single source of truth so all headers match. */
+
+:root {
+  --header-h: 3.5rem;
+  /* Full-width gutter and the site's only two font sizes (the hero title is
+     the single exception). */
+  --gutter: clamp(1.5rem, 4vw, 4rem);
+  /* Full-bleed frame, but prose sits in a readable measure; wide elements
+     (grids, tables, code) may run to --wide. */
+  --measure: 42rem;
+  --wide: 74rem;
+  /* Landing/page content sits centered in this container (symmetric margins). */
+  --container: 62rem;
+  --fs-body: 1.25rem;
+  --fs-head: 1.9rem;
+  --fs-small: 1rem;
+}
+@media (max-width: 640px) {
+  :root { --fs-body: 1.15rem; --fs-head: 1.55rem; }
+}
+/* Anchor jumps leave room for the sticky header. */
+html { scroll-padding-top: calc(var(--header-h) + 1.5rem); }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem var(--gutter);
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  min-width: 0;
+}
+/* Compact Street Machine wordmark in the header: the same treatment as the hero
+   (Candal italic ink "Super" with a hard red drop, Mr Dafoe coral script "Red"),
+   scaled down and with the speed-line bars dropped so it sits on one line. */
+.site-header .wordmark {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  white-space: nowrap;
+  padding-right: 1.9em;   /* room for the tilted script tail */
+  line-height: 1;
+  transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.site-header .wordmark:hover { transform: translateY(-1px); }
+.site-header .wordmark .wm-red { transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+.site-header .wordmark:hover .wm-red { transform: rotate(-12deg) scale(1.06); }
+.site-header .wordmark .wm-super {
+  font-family: "Candal", sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-shadow: -2px 2px 0 #ed2121;
+}
+.site-header .wordmark .wm-red {
+  position: absolute;
+  right: 0;
+  bottom: -0.14em;
+  font-family: "Mr Dafoe", cursive;
+  font-weight: 400;
+  font-size: 1.55rem;
+  color: #fc543e;
+  transform: rotate(-12deg);
+}
+.site-header .tagline {
+  color: var(--gray);
+  font-size: var(--fs-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  font-size: var(--fs-body);
+  white-space: nowrap;
+}
+.site-nav a {
+  position: relative;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 160ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* a red underline that wipes in from the left on hover / active */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background: #ed2121;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.site-nav a:hover { color: var(--ink); }
+.site-nav a:hover::after,
+.site-nav a.active::after { transform: scaleX(1); }
+.site-nav a.active { color: var(--ink); }
+
+/* GitHub icon link: an icon, not a word, so it aligns to the text baseline row
+   and lifts instead of getting the text-underline wipe */
+.site-nav a.nav-github {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  transition: color 160ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 160ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.site-nav a.nav-github::after { content: none; }
+.site-nav a.nav-github:hover { color: var(--ink); transform: translateY(-1px) scale(1.08); }
+.site-nav a.nav-github svg { display: block; }
+@media (prefers-reduced-motion: reduce) {
+  .site-nav a::after { transition: none; }
+}
+
+/* On narrow screens drop the subtitle and stack the brand above the nav so
+   the links never overflow. */
+@media (max-width: 640px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .site-header .tagline { display: none; }
+  .site-nav { gap: 1rem 1.2rem; }
+}
+
+/* A section placed directly under the header (e.g. standalone pages) should
+   not draw its own top rule against the header's bottom rule. */
+.site-header + .section { border-top: none; }
+
+/* ---- code blocks + syntax highlighting (shared across all pages) ---- */
+.highlight { margin: 1.4rem 0; }
+.highlight pre {
+  margin: 0;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.85rem 1.05rem;
+  overflow-x: auto;
+}
+.highlight code,
+.highlight pre {
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+}
+/* Rouge tokens: muted, low-saturation to sit quietly under the serif type. */
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cs { color: #9aa0a6; font-style: italic; }
+.highlight .k, .highlight .kn, .highlight .kc, .highlight .kd, .highlight .kr, .highlight .kt { color: #a13d6d; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd,
+.highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .ss { color: #3f7d3f; }
+.highlight .mi, .highlight .mf, .highlight .mh, .highlight .mo, .highlight .il { color: #a35a00; }
+.highlight .nf, .highlight .nb, .highlight .bp, .highlight .nc, .highlight .nn, .highlight .no { color: #2c5aa0; }
+.highlight .nd, .highlight .ni { color: #a35a00; }
+.highlight .o, .highlight .ow, .highlight .p { color: #5a5a5a; }
+.highlight .n, .highlight .nx, .highlight .nv, .highlight .na { color: var(--ink); }
+
+
+/* ---- footer (shared, on every page) ---- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 2.5rem var(--gutter) 3.5rem;
+  display: flex;
+  justify-content: center;
+  color: var(--gray);
+  font-size: var(--fs-body);
+}
+.site-footer .footer-heart {
+  display: inline-block;
+  color: #ed2121;
+  margin: 0 0.15em;
+  font-style: normal;
+  animation: heart-beat 2.4s ease-in-out infinite;
+}
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1); }
+  8%       { transform: scale(1.22); }
+  16%      { transform: scale(1); }
+  24%      { transform: scale(1.16); }
+  32%      { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-footer .footer-heart { animation: none; }
+}
+.site-footer a { color: var(--gray); text-decoration: none; }
+.site-footer a:hover { color: var(--ink); }
+
+/* screen-reader-only text (the accessible "love" behind the heart glyph) */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- lightbox: click a figure to zoom it full-screen (docs + landing) ---- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(17, 17, 17, 0.82);
+  opacity: 0;
+  transition: opacity 160ms ease;
+  cursor: zoom-out;
+}
+.lightbox.open { opacity: 1; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 6px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }

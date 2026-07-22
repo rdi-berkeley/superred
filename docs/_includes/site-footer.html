@@ -1,0 +1,17 @@
+<footer class="site-footer">
+  <span class="footer-made">Made with <span class="footer-heart" aria-hidden="true">&#10084;</span><span class="visually-hidden">love</span> at the University of California, Berkeley</span>
+</footer>
+<script>
+/* Open every off-site link in a new tab. Internal links (same host, relative,
+   or anchors) are left untouched. Runs once on every page via this include. */
+(function () {
+  var here = window.location.hostname;
+  document.querySelectorAll('a[href]').forEach(function (a) {
+    if (a.hostname && a.hostname !== here && /^https?:$/.test(a.protocol)) {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+})();
+</script>
+{% include lightbox.html %}

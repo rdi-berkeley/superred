@@ -1,0 +1,407 @@
+/* SuperRed docs: simple, Garamond, black on white. */
+
+:root {
+  --ink: #111111;
+  --gray: #808080;
+  --line: #e6e6e6;
+  --accent: #111111;
+  --code-bg: #f6f6f6;
+  --serif: Garamond, "EB Garamond", "Adobe Garamond Pro", "Times New Roman", serif;
+  --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --content-width: 760px;
+  --sidebar-width: 250px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+/* Header lives in site.css (shared across all pages). */
+
+/* ---- layout ---- */
+.layout {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ---- sidebar ---- */
+.sidebar {
+  width: var(--sidebar-width);
+  flex: 0 0 var(--sidebar-width);
+  padding: 1.75rem 1.25rem 1.75rem var(--gutter);
+}
+.sidebar nav { font-size: var(--fs-body); }
+.nav-section {
+  margin: 1.4rem 0 0.4rem;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.nav-section:first-child { margin-top: 0; }
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar li { margin: 0.15rem 0; }
+.sidebar a {
+  display: block;
+  padding: 0.12rem 0;
+  color: var(--ink);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0.7rem;
+  margin-left: -0.7rem;
+}
+.sidebar a:hover { color: #000; text-decoration: underline; }
+.sidebar a.active {
+  font-weight: 500;
+  border-left-color: var(--ink);
+}
+
+/* JS-free disclosure: collapsible on mobile, always open on desktop. */
+.nav-disclosure > summary {
+  cursor: pointer;
+  font-size: var(--fs-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ---- content ---- */
+.content {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 54rem;
+  padding: 1.75rem 2.5rem 5rem;
+}
+.content h1, .content h2, .content h3, .content h4 {
+  line-height: 1.25;
+  font-weight: 500;
+}
+.content h1 { font-size: var(--fs-head); margin: 0.2rem 0 1.2rem; }
+.content h2 {
+  font-size: var(--fs-head);
+  margin: 2.4rem 0 0.8rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.content h3 { font-size: var(--fs-body); margin: 1.8rem 0 0.6rem; }
+.content p, .content li { color: var(--ink); }
+.content a { color: var(--accent); text-underline-offset: 2px; }
+.content a:hover { text-decoration: none; }
+
+/* code */
+.content code {
+  font-family: var(--mono);
+  font-size: var(--fs-small);
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+.content pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0.9rem 1.1rem;
+  overflow-x: auto;
+  line-height: 1.45;
+}
+.content pre code {
+  background: none;
+  padding: 0;
+  font-size: var(--fs-small);
+}
+
+/* tables */
+.content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.2rem 0;
+  font-size: var(--fs-body);
+}
+.content th, .content td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+.content th { background: #fafafa; font-weight: 500; }
+
+/* blockquotes */
+.content blockquote {
+  margin: 1.2rem 0;
+  padding: 0.2rem 1rem;
+  border-left: 3px solid var(--line);
+  color: var(--gray);
+}
+
+.content hr { border: none; border-top: 1px solid var(--line); margin: 2rem 0; }
+
+/* ---- responsive ---- */
+@media (min-width: 800px) {
+  .sidebar {
+    position: sticky;
+    top: var(--header-h);
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+  }
+  /* On desktop the nav is always shown; hide the disclosure toggle. */
+  .nav-disclosure > summary { display: none; }
+  .nav-disclosure > nav { display: block !important; }
+}
+
+@media (max-width: 799px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    flex-basis: auto;
+    border-bottom: 1px solid var(--line);
+    padding: 1rem var(--gutter);
+  }
+  .content { max-width: none; padding: 1.25rem var(--gutter) 4rem; }
+}
+
+/* ---- prev / next pager (guide & reference) ---- */
+.pager {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+}
+.pager-top { margin-bottom: 2rem; }
+.pager-bottom {
+  margin-top: 3rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+.pager a {
+  display: inline-flex;
+  align-items: center;
+  max-width: 48%;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: var(--fs-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pager a:hover { border-color: var(--gray); }
+.pager .pager-next { margin-left: auto; text-align: right; }
+
+/* ---- event-flow diagram (Core Concepts) ----
+   Imported from the Claude Design "Event Flow Diagram", rebuilt as a grid so it
+   cannot overflow: the source is a fixed-aspect canvas of absolutely-positioned
+   boxes with hard-coded px type, which overflows the moment it is scaled down.
+   Same framing as the home-page setup diagram, a bordered box with no title;
+   the surrounding prose gives it context.
+
+   Three boxes in a row with the controller in the middle. Two connector columns
+   carry the horizontal wires: the Event line runs target -> optimizer, the
+   EventResponse line runs optimizer -> target, and both terminate at the
+   controller's edges, so the controller literally sits on the path it mediates.
+   Two sizes only, --fs-head for the names and --fs-small for everything else. */
+.evf-figure {
+  width: 100%;
+  max-width: 54rem;
+  margin: 2rem auto;
+  /* Query on the figure's own width, not the viewport: the doc column shrinks
+     with the sidebar, so viewport width is the wrong signal for when to stack. */
+  container-type: inline-size;
+}
+.evf-box {
+  padding: 1.5rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.evf-grid {
+  display: grid;
+  /* minmax(0, ...) on the box columns so long descriptions wrap instead of
+     forcing the column past its share and overflowing the frame. */
+  /* Asymmetric connectors: the left one carries the long "EventResponse" label
+     so it stays wide; the right one only carries "Event", so it can be much
+     narrower. This reclaims the buffer on the right and lets the boxes breathe,
+     at the cost of the controller no longer being dead-centre (which is fine). */
+  grid-template-columns:
+    minmax(0, 1fr) 8.5rem minmax(0, 1.2fr) 5rem minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.evf-node,
+.evf-controller {
+  position: relative;
+  z-index: 1;                    /* above the connector wires */
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.evf-node {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.9rem 0.85rem;
+}
+.evf-controller { border-color: var(--ink); padding: 0.85rem 0.85rem; }
+
+.evf-kicker {
+  margin: 0;
+  font-size: var(--fs-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* allowed to wrap: "Module / Attacker" is long, and a narrow box must never
+     let it spill past the border. */
+  color: var(--gray);
+}
+.evf-name { margin: 0; font-size: var(--fs-body); font-weight: 500; line-height: 1.15; }
+.evf-desc { margin: 0; font-size: var(--fs-small); line-height: 1.35; color: #333333; }
+
+/* controller internals: heading over two sub-boxes */
+.evf-ctrl-head { text-align: center; margin-bottom: 0.7rem; }
+.evf-ctrl-head .evf-name { font-size: var(--fs-body); }
+.evf-subs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.evf-sub {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--code-bg);
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+}
+.evf-sub-name { margin: 0; font-size: var(--fs-small); font-weight: 500; line-height: 1.1; color: var(--ink); }
+.evf-sub-note { margin: 0.15rem 0 0; font-size: var(--fs-small); line-height: 1.2; color: var(--gray); }
+
+/* connectors: two horizontal wires, a head at the far end, and a chip label.
+   The wires sit at the same two heights in both connectors, so they line up
+   across the controller as one continuous path. */
+.evf-conn { position: relative; }
+.evf-wire {
+  position: absolute;
+  left: 0; right: 0;
+  height: 0;
+  border-top: 1px solid var(--ink);
+}
+.evf-wire-event { top: 40%; }
+.evf-wire-resp  { top: 64%; }
+.evf-head { position: absolute; top: 50%; width: 0; height: 0; border-style: solid; }
+.evf-head-left {
+  left: 0; transform: translateY(-50%);
+  border-width: 4px 6px 4px 0;
+  border-color: transparent var(--ink) transparent transparent;
+}
+.evf-head-right {
+  right: 0; transform: translateY(-50%);
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent var(--ink);
+}
+.evf-tag {
+  position: absolute;
+  left: 50%;
+  padding: 2px 6px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--ink);
+  background: #ffffff;                 /* punches a hole in the wire */
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.evf-tag-event { top: 40%; transform: translate(-50%, -50%); }
+.evf-tag-resp  { top: 64%; transform: translate(-50%, -50%); }
+
+/* Stack when the diagram itself gets too narrow for the row (not the viewport):
+   the boxes stack and each connector becomes a short vertical link with its
+   label. Container query, so the sidebar's width is accounted for. */
+@container (max-width: 43rem) {
+  .evf-grid { grid-template-columns: 1fr; row-gap: 0.6rem; }
+  .evf-conn {
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .evf-conn::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    border-left: 1px solid var(--ink);
+  }
+  .evf-wire, .evf-head { display: none; }
+  .evf-tag { position: relative; left: auto; top: auto; transform: none; }
+}
+
+/* ---- Design figures (reference D1-D7, guide U1-U8) ----
+   Each is an inlined design-compiler figure: an absolutely-positioned SVG + HTML
+   composition that reads the design-system tokens below. The tokens are scoped
+   to .dc-figure so they never leak to the rest of the page (the site already
+   defines --ink/--gray/--line/--code-bg at :root; the figures also need --paper
+   and --gray-33, and use --font-serif/--font-mono which we alias to the site's
+   --serif/--mono). Same framing as .evf-figure: a bordered box, no title, with
+   the surrounding prose for context. Hover lifts the box with a shadow only, so
+   it never fights the figure's own inline border. */
+.dc-figure {
+  --paper: #ffffff;
+  --ink: #111111;
+  --ink-pure: #000000;
+  --gray: #808080;
+  --gray-33: #333333;
+  --line: #e6e6e6;
+  --code-bg: #f6f6f6;
+  --paper-2: #fafafa;
+  --font-serif: var(--serif);
+  --font-mono: var(--mono);
+
+  display: block;
+  width: 100%;
+  max-width: 54rem;
+  margin: 2rem auto;
+}
+.dc-figure > figure {
+  /* Hug the drawing: the designs carry their own internal breathing room, so
+     the box only needs a small, uniform frame. Overrides each figure's inline
+     padding. */
+  padding: 8px 10px !important;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.dc-figure:hover > figure {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dc-figure > figure { transition: none; }
+  .dc-figure:hover > figure { transform: none; }
+}
+
+/* ---- figures (screenshots in the guide/reference) ---- */
+.content .doc-figure {
+  margin: 1.6rem 0;
+}
+.content .doc-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.content .doc-figure figcaption {
+  margin-top: 0.55rem;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--gray);
+}
