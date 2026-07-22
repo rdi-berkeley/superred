@@ -242,7 +242,7 @@ Each receives a frozen payload (`ThreatModelContext`, `TaskStartEvent`,
 
 ### Concurrent Controllers share one dashboard
 
-A sweep run through [`run_all`](/reference/controller#sweeping-multiple-threat-models)
+A sweep run through [`run_all`]({{ '/reference/controller#sweeping-multiple-threat-models' | relative_url }})
 renders every threat model into a **single** shared canvas, one lane each, rather
 than fighting over the terminal: `run_all` owns one `Dashboard`, calls
 `expect(n)`, and pre-registers a lane per Controller, and the dashboard stays

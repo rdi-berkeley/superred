@@ -14,7 +14,7 @@ full, everything an attacker might touch or observe, and then to run.
 You write a target by subclassing `Target` and implementing its surfaces and
 lifecycle. The guiding principle is to keep a target **general and reusable**:
 wrap "any LLM" or "the AgentDojo agent," and leave benchmark-specific goals and
-judging to the [Task](/reference/task) and [SecurityClaim](/reference/security-claim).
+judging to the [Task]({{ '/reference/task' | relative_url }}) and [SecurityClaim]({{ '/reference/security-claim' | relative_url }}).
 
 ## The five surfaces
 
@@ -75,7 +75,7 @@ query is post-run ground truth, which may differ from what was configured.
 
 - `get_controllables() -> list[Controllable]` the injection points the optimizer
   may manipulate during a run. Each carries a
-  [security-domain tag](/reference/security-domains). Controllables are everything
+  [security-domain tag]({{ '/reference/security-domains' | relative_url }}). Controllables are everything
   relevant an attacker could meddle with: a system prompt, the user input, a tool's
   return value, a retrieved document, memory carried across runs.
 - `get_observables() -> list[ObservableValue]` static context the optimizer may
@@ -88,10 +88,10 @@ always returns its **full** set and lets the threat model decide what is visible
 ## Security domain
 
 - `security_domain -> SecurityDomain` the target's
-  [trust-boundary forest](/reference/security-domains). It classifies every
+  [trust-boundary forest]({{ '/reference/security-domains' | relative_url }}). It classifies every
   controllable and observable into a hierarchy the Controller filters by. Designing
   this forest is the most consequential modelling decision a target author makes;
-  the guide's [Security Domains](/guide/security-domains) page works through it.
+  the guide's [Security Domains]({{ '/guide/security-domains' | relative_url }}) page works through it.
 
 ## Execution and the state lifecycle
 
@@ -99,7 +99,7 @@ always returns its **full** set and lets the threat model decide what is visible
   `emit(ObservableEvent(observable=..., content=...))` (fire-and-forget), and pause
   at each controllable with `await send_event(ControllablePreCallEvent(...))`,
   using the returned response. The target receives only these two callbacks (typed
-  [`EventHandler` and `EventResponseHandler`](/reference/events-and-trajectory#callback-type-aliases)),
+  [`EventHandler` and `EventResponseHandler`]({{ '/reference/events-and-trajectory#callback-type-aliases' | relative_url }})),
   not the trajectory object, so it can record but not read or close it.
 - `async reset_ephemeral_state()` reset per-run state after each evaluation.
 - `async teardown()` release external resources when all evaluation is done.
@@ -129,9 +129,9 @@ A target may run inference concurrently. It may spawn branches that each call
 `send_event` independently (each suspends only its own branch), and a thread-backed
 target (Docker, a subprocess) may bridge blocking work back to the loop with
 `asyncio.run_coroutine_threadsafe`. Target instances carry no concurrency cap of
-their own; the [`TargetFactory`](/reference/controller#targetfactory) decides how
+their own; the [`TargetFactory`]({{ '/reference/controller#targetfactory' | relative_url }}) decides how
 many run in parallel. The patterns and examples are in
-[Events, Channel & Trajectory](/reference/events-and-trajectory#concurrency-model).
+[Events, Channel & Trajectory]({{ '/reference/events-and-trajectory#concurrency-model' | relative_url }}).
 
 ## A minimal shape
 

@@ -9,14 +9,14 @@ permalink: /reference/optimizer
 The **optimizer** is the attacker. It is the only actively adversarial component:
 it drives the target toward violating a security property, using only the access
 the current threat model grants it. It acts **only** through
-[controllables](/reference/types#controllable-controllablepy) and observes **only**
-through [observables](/reference/types#observable-observablepy) and the
-[trajectory](/reference/events-and-trajectory#trajectory); it never touches the
+[controllables]({{ '/reference/types#controllable-controllablepy' | relative_url }}) and observes **only**
+through [observables]({{ '/reference/types#observable-observablepy' | relative_url }}) and the
+[trajectory]({{ '/reference/events-and-trajectory#trajectory' | relative_url }}); it never touches the
 target directly.
 
 An optimizer is an **actor**: the Controller launches its `run(channel)` as a
 concurrent `asyncio.Task`, and the optimizer pulls
-[events](/reference/events-and-trajectory#events-and-responses) off the channel at
+[events]({{ '/reference/events-and-trajectory#events-and-responses' | relative_url }}) off the channel at
 its own pace and answers each one. You implement one by subclassing `Optimizer`.
 
 ## Lifecycle
@@ -93,14 +93,14 @@ async def on_event(self, event):
 
 The optimizer is never asked about surfaces outside its scope: the Controller
 answers those with `ControllableNoInjection` itself. Success is decided by the
-[Task](/reference/task), not the optimizer; `event.evaluation` is for **steering**
+[Task]({{ '/reference/task' | relative_url }}), not the optimizer; `event.evaluation` is for **steering**
 the next attempt, not for self-certifying a win. An optimizer that always declines
 is the passthrough baseline: it changes nothing and reproduces the target's
 unattacked behavior.
 
 ## LLM access
 
-The Controller passes a constrained [`LLMClient`](/reference/types#llmclient-corellmpy)
+The Controller passes a constrained [`LLMClient`]({{ '/reference/types#llmclient-corellmpy' | relative_url }})
 to `initialize()`; the base class stores it, and after `super().initialize(...)`
 you reach it as **`self.llm`**. The client locks the model and credentials and
 enforces the per-task cost cap: a call raises `BudgetExhaustedError` once the cap
@@ -177,7 +177,7 @@ The base class provides `_dispatch`, which wraps `on_event`:
 lifecycle (archiving on a `RunEndEvent`), then calls `envelope.reject(exc)` so the
 sender (the target's `await send_event`) receives the exception instead of
 deadlocking, and re-raises. The exception exits `run()`, the Controller detects the
-failure, and it then [poisons the channel](/reference/events-and-trajectory#eventchannel)
+failure, and it then [poisons the channel]({{ '/reference/events-and-trajectory#eventchannel' | relative_url }})
 with `set_error()` so no other in-flight `send` hangs.
 
 Use `_dispatch` from any custom `run()`. Advanced optimizers may handle envelopes
@@ -189,7 +189,7 @@ contract themselves.
 The base class tracks trajectory history for you:
 
 - `current_trajectory -> ReadableTrajectory | None` the trajectory for the active
-  run (a [`FilteredTrajectory`](/reference/events-and-trajectory#trajectory)
+  run (a [`FilteredTrajectory`]({{ '/reference/events-and-trajectory#trajectory' | relative_url }})
   scoped to what the optimizer may see). Set on `RunStartEvent`, cleared on
   `RunEndEvent`, `None` between runs.
 - `past_trajectories -> list[ReadableTrajectory]` all completed run trajectories,
@@ -213,7 +213,7 @@ past runs' feedback is on their trajectories).
 - **Actor model.** The optimizer is its own concurrent task, not called
   synchronously, so it, not the Controller, owns its consumption strategy.
 - **Channel, not method calls.** Events flow over the
-  [`EventChannel`](/reference/events-and-trajectory#eventchannel-and-eventenvelope),
+  [`EventChannel`]({{ '/reference/events-and-trajectory#eventchannel-and-eventenvelope' | relative_url }}),
   decoupling the optimizer from the target's execution.
 - **Lifecycle events, not hooks.** `RunStartEvent` and `RunEndEvent` are ordinary
   events on the same channel, so there are no special methods to override.

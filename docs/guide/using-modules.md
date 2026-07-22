@@ -7,7 +7,7 @@ permalink: /guide/using-modules
 # Using a Module
 
 Provided modules are ordinary Python packages. To use one: `pip install` it,
-import its class or factory, and pass it to the [Controller](/reference/controller).
+import its class or factory, and pass it to the [Controller]({{ '/reference/controller' | relative_url }}).
 The pattern is the same
 for all three kinds, shown below.
 
@@ -81,5 +81,5 @@ controller = Controller(
 ```
 
 Claim factories take options such as which split to run or which judge model to
-use. See each package for the specifics, and [Running Evaluations](/guide/running-evaluations)
+use. See each package for the specifics, and [Running Evaluations]({{ '/guide/running-evaluations' | relative_url }})
 for how the controller turns a claim into a full run.

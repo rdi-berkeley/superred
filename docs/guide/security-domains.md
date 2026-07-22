@@ -388,4 +388,4 @@ results = await run_all(controllers, concurrency=4)   # one shared live dashboar
 
 Each `scope` is already the `frozenset` the Controller wants, and `run_all` drives
 the whole sweep on one shared live dashboard, returning the results in input
-order. See [Running Evaluations](/guide/running-evaluations#sweeping-multiple-threat-models).
+order. See [Running Evaluations]({{ '/guide/running-evaluations#sweeping-multiple-threat-models' | relative_url }}).

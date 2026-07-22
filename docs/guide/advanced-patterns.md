@@ -115,7 +115,7 @@ for tr in result.task_results:
 Run the same claim under different scopes to chart the attack surface. Build a
 Controller per scope and drive them through `run_all`, so the whole sweep shares
 one live dashboard and one results folder (see [Running
-Evaluations](/guide/running-evaluations#sweeping-multiple-threat-models)):
+Evaluations]({{ '/guide/running-evaluations#sweeping-multiple-threat-models' | relative_url }})):
 
 ```python
 from superred.core.controller import run_all

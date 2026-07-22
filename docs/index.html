@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Candal&family=Mr+Dafoe&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/home.css">
-  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="{{ '/assets/home.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
 </head>
 <body>
 
@@ -47,7 +47,7 @@
         </span>
       </button>
       <span class="cta-and">and</span>
-      <a class="btn btn-primary" href="/guide/">Get started</a>
+      <a class="btn btn-primary" href="{{ '/guide/' | relative_url }}">Get started</a>
     </div>
   </section>
 
@@ -122,12 +122,12 @@
     </div>
     <div class="section-body">
     <div class="doc-cards">
-      <a class="card" href="/modules">
+      <a class="card" href="{{ '/modules' | relative_url }}">
         <h3>Attacks, targets, and benchmarks, ready to run</h3>
         <p>Over a dozen faithfully implemented attacks, including AutoDAN-Turbo, PAIR, TAP, Crescendo, and AgentVigil, alongside targets and safety benchmarks such as HarmBench, DecodingTrust, and AgentDojo.</p>
         <span class="go">Browse the modules &rarr;</span>
       </a>
-      <a class="card" href="/research">
+      <a class="card" href="{{ '/research' | relative_url }}">
         <h3>Research built with SuperRed</h3>
         <p>From new attack strategies to full system evaluations, SuperRed is the substrate researchers and builders use to do serious red-teaming work.</p>
         <span class="go">See the research &rarr;</span>
@@ -182,7 +182,7 @@
     <div class="section-body">
     <p>Attack, system, and benchmark are the same kind of thing here: interchangeable modules. Hold any one fixed to evaluate it; every contribution strengthens a shared toolbox.</p>
     <div class="audience">
-      <a class="aud-card" href="/guide/writing-an-optimizer">
+      <a class="aud-card" href="{{ '/guide/writing-an-optimizer' | relative_url }}">
         <h3 class="aud-title">For red-teamers</h3>
         <p class="aud-lead">An interactive environment for developing attacks, so you can build and score novel strategies on real environments as you go.</p>
         <div class="aud-rule"></div>
@@ -192,7 +192,7 @@
         </ul>
         <span class="go">Write an optimizer &rarr;</span>
       </a>
-      <a class="aud-card" href="/guide/writing-a-target">
+      <a class="aud-card" href="{{ '/guide/writing-a-target' | relative_url }}">
         <h3 class="aud-title">For system builders</h3>
         <p class="aud-lead">Declare your system's trust boundaries once, then see exactly which attacks succeed at each level of access.</p>
         <div class="aud-rule"></div>
@@ -202,7 +202,7 @@
         </ul>
         <span class="go">Write a target &rarr;</span>
       </a>
-      <a class="aud-card" href="/guide/writing-tasks">
+      <a class="aud-card" href="{{ '/guide/writing-tasks' | relative_url }}">
         <h3 class="aud-title">For evaluators</h3>
         <p class="aud-lead">Package a benchmark once as a security claim, then score any attacker against any target, or reuse the ones already ported.</p>
         <div class="aud-rule"></div>
@@ -308,7 +308,7 @@
       <!-- The report SuperRed writes for one threat model, framed like the
            diagram above. -->
       <figure class="results-shot">
-        <img src="/assets/img/results-dashboard.png" width="1999" height="1319" loading="lazy"
+        <img src="{{ '/assets/img/results-dashboard.png' | relative_url }}" width="1999" height="1319" loading="lazy"
              alt="SuperRed results report for a HarmBench threat model: 42% attack success rate over 5 of 12 goals, mean score 0.57, max 0.94, $11.23 optimizer spend, run-outcome breakdown, and a table of per-task goals with outcomes, best scores, runs, and cost.">
       </figure>
     </div>
@@ -350,7 +350,7 @@ await controller.run()
         <pre class="runnable-panel runnable-out" id="panel-output" role="tabpanel" aria-labelledby="tab-output" aria-live="polite" hidden></pre>
       </div>
     </div>
-    <p class="muted" style="margin-top:1.2rem"><a href="/guide/">The full walk-through, in the guide &rarr;</a></p>
+    <p class="muted" style="margin-top:1.2rem"><a href="{{ '/guide/' | relative_url }}">The full walk-through, in the guide &rarr;</a></p>
     </div>
   </section>
 
@@ -362,12 +362,12 @@ await controller.run()
     </div>
     <div class="section-body">
     <div class="doc-cards">
-      <a class="card" href="/guide/">
+      <a class="card" href="{{ '/guide/' | relative_url }}">
         <h3>Guide</h3>
         <p>Hands-on and example-driven: getting started, the core concepts of models and events, and worked examples. Start here.</p>
         <span class="go">Open the guide &rarr;</span>
       </a>
-      <a class="card" href="/reference/">
+      <a class="card" href="{{ '/reference/' | relative_url }}">
         <h3>Reference</h3>
         <p>The framework interfaces in technical detail: the controller, optimizer, target, task, security claim, and core types.</p>
         <span class="go">Open the reference &rarr;</span>
@@ -392,11 +392,11 @@ await controller.run()
           stays identical.
         {%- endcomment -%}
         {% capture ub_set %}
-          <img class="ub-logo ub-aws" src="/assets/img/logos/aws.svg" alt="AWS" width="101" height="60" loading="lazy">
-          <img class="ub-logo ub-google" src="/assets/img/logos/google.svg" alt="Google" width="178" height="60" loading="lazy">
-          <img class="ub-logo ub-eth" src="/assets/img/logos/eth.svg" alt="ETH Zürich" width="360" height="60" loading="lazy">
-          <img class="ub-logo ub-berkeley" src="/assets/img/logos/berkeley.svg" alt="UC Berkeley" width="191" height="60" loading="lazy">
-          <img class="ub-logo ub-meta" src="/assets/img/logos/meta.svg" alt="Meta" width="298" height="60" loading="lazy">
+          <img class="ub-logo ub-aws" src="{{ '/assets/img/logos/aws.svg' | relative_url }}" alt="AWS" width="101" height="60" loading="lazy">
+          <img class="ub-logo ub-google" src="{{ '/assets/img/logos/google.svg' | relative_url }}" alt="Google" width="178" height="60" loading="lazy">
+          <img class="ub-logo ub-eth" src="{{ '/assets/img/logos/eth.svg' | relative_url }}" alt="ETH Zürich" width="360" height="60" loading="lazy">
+          <img class="ub-logo ub-berkeley" src="{{ '/assets/img/logos/berkeley.svg' | relative_url }}" alt="UC Berkeley" width="191" height="60" loading="lazy">
+          <img class="ub-logo ub-meta" src="{{ '/assets/img/logos/meta.svg' | relative_url }}" alt="Meta" width="298" height="60" loading="lazy">
         {% endcapture %}
         {{ ub_set }}{{ ub_set }}{{ ub_set }}{{ ub_set }}
       </div>

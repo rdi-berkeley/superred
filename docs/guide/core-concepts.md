@@ -52,7 +52,7 @@ benchmark-specific logic out of it. The chatbot target wraps "any LLM"; the
 AgentDojo target wraps "the AgentDojo agent". The specifics of a given benchmark
 live in the SecurityClaim, not the target.
 
-See [Writing a Target](/guide/writing-a-target).
+See [Writing a Target]({{ '/guide/writing-a-target' | relative_url }}).
 
 ### Optimizer
 
@@ -76,7 +76,7 @@ optimizer is LLM-driven: after each run it reads the model's reply from its
 trajectory and asks its own LLM to rewrite the next prompt, iterating toward a
 jailbreak.
 
-See [Writing an Optimizer](/guide/writing-an-optimizer).
+See [Writing an Optimizer]({{ '/guide/writing-an-optimizer' | relative_url }}).
 
 ### Task
 
@@ -95,7 +95,7 @@ For example, a secret-leak task plants a secret in the target's system prompt
 and marks the run a success if the model reveals it. A HarmBench task hands the
 target one harmful instruction and scores whether the model complied.
 
-See [Writing Tasks](/guide/writing-tasks).
+See [Writing Tasks]({{ '/guide/writing-tasks' | relative_url }}).
 
 ### SecurityClaim
 
@@ -117,7 +117,7 @@ For example, the `demo_secret_leak` claim is a single hand-written task, while
 the `harmbench` claim loads the HarmBench dataset and produces one task for each
 harmful behavior in it.
 
-See [Writing Tasks and Security Claims](/guide/writing-tasks).
+See [Writing Tasks and Security Claims]({{ '/guide/writing-tasks' | relative_url }}).
 
 ### Controller = one threat model
 
@@ -133,8 +133,8 @@ is captured by three things:
 
 **One `Controller` instance evaluates one claim under one such threat model.** To compare several threat models (a weak attacker vs a strong
 one, with feedback vs without), you build several Controllers. That is covered
-in [Running Evaluations](/guide/running-evaluations) and
-[Advanced Patterns](/guide/advanced-patterns).
+in [Running Evaluations]({{ '/guide/running-evaluations' | relative_url }}) and
+[Advanced Patterns]({{ '/guide/advanced-patterns' | relative_url }}).
 
 The Controller never shares a target between concurrent tasks: it gets each task
 a fresh target from the `target_factory` and a fresh optimizer from the
@@ -291,7 +291,7 @@ optimizer can see or touch** to that boundary:
 This is how you ask precise questions like *"what can an attacker achieve if they
 control only the user message, and nothing else?"* Choosing these boundaries
 well, based on the real trust structure of the system, is the most important
-modelling decision you make when implementing a target. [Security Domains](/guide/security-domains) is
+modelling decision you make when implementing a target. [Security Domains]({{ '/guide/security-domains' | relative_url }}) is
 devoted to it.
 
 ## Scores

@@ -113,7 +113,7 @@ The Controller streams live progress the whole way through:
   shows on that identity line too. A final results view renders when the run ends.
 
   <figure class="doc-figure">
-    <img src="/assets/img/run-live-terminal.png" alt="superred's live terminal dashboard during a run: a header line with overall progress (task count, attack-success rate, running count and attacker spend) above a per-threat-model block showing its identity and metrics, with the currently running tasks listed indented beneath it.">
+    <img src="{{ '/assets/img/run-live-terminal.png' | relative_url }}" alt="superred's live terminal dashboard during a run: a header line with overall progress (task count, attack-success rate, running count and attacker spend) above a per-threat-model block showing its identity and metrics, with the currently running tasks listed indented beneath it.">
     <figcaption>The live dashboard on an interactive terminal, updating as the run proceeds.</figcaption>
   </figure>
 - On a non-TTY, in CI, under `NO_COLOR`, or when output is piped, it degrades
@@ -121,7 +121,7 @@ The Controller streams live progress the whole way through:
   summary.
 
   <figure class="doc-figure">
-    <img src="/assets/img/run-plain-output.png" alt="superred's plain-line output on a non-TTY: a start banner naming the threat model (scope, model, attacker, target, claim, task count, concurrency, budget), a line for the completed task with its outcome, score, run count and cost, and an end summary with the attack-success rate, highest score, and total attacker calls, cost and elapsed time.">
+    <img src="{{ '/assets/img/run-plain-output.png' | relative_url }}" alt="superred's plain-line output on a non-TTY: a start banner naming the threat model (scope, model, attacker, target, claim, task count, concurrency, budget), a line for the completed task with its outcome, score, run count and cost, and an end summary with the attack-success rate, highest score, and total attacker calls, cost and elapsed time.">
     <figcaption>The plain-line fallback used off a TTY (in CI, piped output, or under NO_COLOR): a start banner, one line per task, and an end summary.</figcaption>
   </figure>
 - Several Controllers run through `run_all` on a TTY share **one** dashboard, one
@@ -129,7 +129,7 @@ The Controller streams live progress the whole way through:
   carries its own identity). See "Sweeping multiple threat models" below.
 
   <figure class="doc-figure">
-    <img src="/assets/img/run-sweep-dashboard.png" alt="superred's shared live dashboard for a sweep of six threat models: a header with overall progress (tasks done, attack-success rate, running count, attacker spend, threat-model count) above one row per threat model, each carrying its own attacker, target, claim, model, scope and budget with progress, ASR, score, outcome counts and cost; some rows running with their tasks expanded, others queued.">
+    <img src="{{ '/assets/img/run-sweep-dashboard.png' | relative_url }}" alt="superred's shared live dashboard for a sweep of six threat models: a header with overall progress (tasks done, attack-success rate, running count, attacker spend, threat-model count) above one row per threat model, each carrying its own attacker, target, claim, model, scope and budget with progress, ASR, score, outcome counts and cost; some rows running with their tasks expanded, others queued.">
     <figcaption>One shared dashboard for a sweep through run_all: each threat model gets its own row, running ones expanded to their live tasks, queued ones waiting.</figcaption>
   </figure>
 
@@ -286,7 +286,7 @@ superred serve ./superred-results
 `file://` URL; `superred serve` runs the tiny local server for you.)
 
 <figure class="doc-figure">
-  <img src="/assets/img/results-web-report.png" alt="The superred web dashboard for a results directory: overall attack success rate and attacker cost, a run-outcomes bar, and a per-task table you can filter by outcome and expand to open each run's trajectory.">
+  <img src="{{ '/assets/img/results-web-report.png' | relative_url }}" alt="The superred web dashboard for a results directory: overall attack success rate and attacker cost, a run-outcomes bar, and a per-task table you can filter by outcome and expand to open each run's trajectory.">
   <figcaption>The static HTML dashboard served by superred serve: metrics, outcome filters, and per-task drill-down into runs and trajectories.</figcaption>
 </figure>
 
@@ -403,4 +403,4 @@ asyncio.run(main())
 ```
 
 For the design rationale behind all of this (per-task lifecycle, the middleware
-pipeline, exact persistence format), see the [Controller reference](/reference/controller).
+pipeline, exact persistence format), see the [Controller reference]({{ '/reference/controller' | relative_url }}).

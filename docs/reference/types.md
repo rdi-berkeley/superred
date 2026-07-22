@@ -15,12 +15,12 @@ Some closely related machinery lives on dedicated pages, because it is more than
 a data type:
 
 - the **event and response types**, the **channel**, and the **trajectory** are
-  in [Events, Channel & Trajectory](/reference/events-and-trajectory);
+  in [Events, Channel & Trajectory]({{ '/reference/events-and-trajectory' | relative_url }});
 - the **security-domain types** (`SecurityDomainTag`, `SecurityDomain`, `Scope`,
   `ScopeResolver`, `scope_includes`) are in
-  [Security Domains](/reference/security-domains);
+  [Security Domains]({{ '/reference/security-domains' | relative_url }});
 - the **result types** (`RunResult`, `TaskResult`, `ThreatModelResult`) are in
-  [Results & Persistence](/reference/results).
+  [Results & Persistence]({{ '/reference/results' | relative_url }}).
 
 Everything here is importable from `superred.core` (and `superred.core.types`).
 
@@ -92,7 +92,7 @@ inject into.
 
 A `Controllable` is identity-stable and carries no per-call data. The live
 request and answer for a given injection live on the
-[`ControllablePreCallEvent` / `ControllablePostCallEvent`](/reference/events-and-trajectory#the-concrete-events),
+[`ControllablePreCallEvent` / `ControllablePostCallEvent`]({{ '/reference/events-and-trajectory#the-concrete-events' | relative_url }}),
 not on the `Controllable`.
 
 ## Observable (`observable.py`)
@@ -155,7 +155,7 @@ How feedback is filtered: two orthogonal controls apply. The Controller's
 `EvaluationResult`, or `None`). Independently, scope filtering drops only
 `sub_scores` whose `security_domain` is out of scope; an untagged sub-score stays,
 and the `primary_score`, `success`, and `rationale` are never filtered. This is
-detailed in [Security Domains](/reference/security-domains#the-five-filtered-surfaces).
+detailed in [Security Domains]({{ '/reference/security-domains#the-five-filtered-surfaces' | relative_url }}).
 
 ## LLM types (`llm.py`)
 
@@ -178,7 +178,7 @@ leak into logs.
 
 Cumulative usage counters: `calls: int = 0` and `cost: float = 0.0` (USD,
 computed by `litellm.completion_cost()`). Used throughout the
-[result types](/reference/results#result-objects) to report attacker spend.
+[result types]({{ '/reference/results#result-objects' | relative_url }}) to report attacker spend.
 
 ### `BudgetExhaustedError` (Exception)
 

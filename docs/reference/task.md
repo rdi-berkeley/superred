@@ -8,9 +8,9 @@ permalink: /reference/task
 
 A **task** is one adversarial objective against a target: it sets the target up
 before a run, then judges the outcome after. A task holds the "what to test" and
-the "did it work"; the [Optimizer](/reference/optimizer) supplies the "how to
-attack." Tasks are grouped into a [SecurityClaim](/reference/security-claim), and
-the [Controller](/reference/controller) runs one target-and-optimizer pair per
+the "did it work"; the [Optimizer]({{ '/reference/optimizer' | relative_url }}) supplies the "how to
+attack." Tasks are grouped into a [SecurityClaim]({{ '/reference/security-claim' | relative_url }}), and
+the [Controller]({{ '/reference/controller' | relative_url }}) runs one target-and-optimizer pair per
 task.
 
 Tasks are **stateless** and **generic over the target type**.
@@ -66,19 +66,19 @@ its result from the target's post-run state.
 ## Methods
 
 - `goal -> Goal` (property) the adversarial objective. See
-  [Goal](/reference/types#goal-goalpy).
+  [Goal]({{ '/reference/types#goal-goalpy' | relative_url }}).
 - `async configure_target(target) -> None` set pre-run config via
   `target.set_config()`. Returns nothing; configuration is a side effect on the
   target. Raise `NotApplicable` if this task cannot work with this target.
 - `async evaluate(trajectory, target) -> EvaluationResult` judge the run. It
   receives the **full, unfiltered** trajectory and the target, and queries post-run
   ground truth via `target.query()`. It returns an
-  [`EvaluationResult`](/reference/types#evaluationresult-frozen).
+  [`EvaluationResult`]({{ '/reference/types#evaluationresult-frozen' | relative_url }}).
 
 **`NotApplicable`.** A task raises this from `configure_target` to signal it is
 incompatible with the given target (not a bug). The exception is named without an
 `Error` suffix on purpose. The Controller catches it and collects the task into
-[`skipped_tasks`](/reference/results#threatmodelresult), rather than failing.
+[`skipped_tasks`]({{ '/reference/results#threatmodelresult' | relative_url }}), rather than failing.
 
 ## Scores, feedback, and the primary score
 
@@ -94,7 +94,7 @@ framework enforces or applies:
   `security_domain` (`SecurityDomainTag | None`). Before the feedback reaches the
   optimizer, the Controller drops sub-scores whose domain is out of scope; an
   untagged one (`None`) stays. The `primary_score`, `success`, and `rationale` are
-  always delivered. See [Security Domains](/reference/security-domains#the-five-filtered-surfaces).
+  always delivered. See [Security Domains]({{ '/reference/security-domains#the-five-filtered-surfaces' | relative_url }}).
 
 Any judges or scorers a task runs during `evaluate` use their own LLM client and do
 **not** count against the optimizer's budget, exactly like the target's own

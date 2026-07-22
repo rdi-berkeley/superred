@@ -13,7 +13,7 @@ Controller filters by them.
 
 This page specifies the types and their exact semantics. For the modelling
 question, how to map a real system's trust structure onto domains, see the guide
-page [Security Domains](/guide/security-domains), which works through the shipped
+page [Security Domains]({{ '/guide/security-domains' | relative_url }}), which works through the shipped
 targets. This reference and that guide use the same model; this one is the
 precise contract.
 
@@ -191,8 +191,8 @@ this threat model it is a thing you read, not a thing you inject. Its runtime
 values still arrive on the trajectory as its (declined) controllable events. The
 `primary_score`, `success`, and `rationale` are always delivered regardless of
 scope, because the attacker needs the main optimization signal. This filtering
-mechanism is implemented in the [Controller](/reference/controller#security-domain-filtering)
-via the [`security_domain_filter` middleware](/reference/events-and-trajectory#middleware-where-scope-and-recording-live).
+mechanism is implemented in the [Controller]({{ '/reference/controller#security-domain-filtering' | relative_url }})
+via the [`security_domain_filter` middleware]({{ '/reference/events-and-trajectory#middleware-where-scope-and-recording-live' | relative_url }}).
 
 ## Per-task scopes: `ScopeResolver`
 
@@ -248,6 +248,6 @@ Four things to get right:
   will not match and would gate everything out.
 
 Each task then records the scope it actually ran under on `TaskResult.scope` and
-`TaskResult.read_only`. See the [Controller](/reference/controller#scope-may-be-a-fixed-scope-or-a-per-task-scoperesolver)
+`TaskResult.read_only`. See the [Controller]({{ '/reference/controller#scope-may-be-a-fixed-scope-or-a-per-task-scoperesolver' | relative_url }})
 for how this threads through construction, and
-[Results & Persistence](/reference/results) for where it is recorded.
+[Results & Persistence]({{ '/reference/results' | relative_url }}) for where it is recorded.

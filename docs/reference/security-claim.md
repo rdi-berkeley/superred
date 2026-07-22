@@ -7,8 +7,8 @@ permalink: /reference/security-claim
 # SecurityClaim
 
 A **security claim** is a composable, re-iterable collection of
-[tasks](/reference/task). It is what you hand to the
-[Controller](/reference/controller): the set of adversarial objectives to evaluate.
+[tasks]({{ '/reference/task' | relative_url }}). It is what you hand to the
+[Controller]({{ '/reference/controller' | relative_url }}): the set of adversarial objectives to evaluate.
 Conceptually it represents a property claimed to hold on a target (confidentiality,
 integrity, and so on) that the optimizer may disprove, one task at a time.
 
@@ -63,7 +63,7 @@ for task in claim:   # works again
     ...
 ```
 
-This is safe precisely because [tasks are stateless](/reference/task#stateless-design):
+This is safe precisely because [tasks are stateless]({{ '/reference/task#stateless-design' | relative_url }}):
 iterating a claim never mutates its tasks, so the Controller (and your own analysis
 code) can walk it more than once.
 

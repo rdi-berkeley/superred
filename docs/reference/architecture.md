@@ -23,11 +23,11 @@ subclass.
 
 | Role | What it is | You |
 |------|-----------|-----|
-| **[Target](/reference/target)** | The AI system under test (a chatbot, a tool-using agent) | implement |
-| **[Optimizer](/reference/optimizer)** | The attacker: an automated strategy that tries to break the target | implement |
-| **[Task](/reference/task)** | One adversarial objective: set the target up, then judge the outcome | implement |
-| **[SecurityClaim](/reference/security-claim)** | A re-iterable collection of tasks (a test suite) | implement |
-| **[Controller](/reference/controller)** | The orchestrator: runs one claim under one threat model | configure |
+| **[Target]({{ '/reference/target' | relative_url }})** | The AI system under test (a chatbot, a tool-using agent) | implement |
+| **[Optimizer]({{ '/reference/optimizer' | relative_url }})** | The attacker: an automated strategy that tries to break the target | implement |
+| **[Task]({{ '/reference/task' | relative_url }})** | One adversarial objective: set the target up, then judge the outcome | implement |
+| **[SecurityClaim]({{ '/reference/security-claim' | relative_url }})** | A re-iterable collection of tasks (a test suite) | implement |
+| **[Controller]({{ '/reference/controller' | relative_url }})** | The orchestrator: runs one claim under one threat model | configure |
 
 The Target is a **passive** attack surface and the Task **judges** the outcome.
 The Optimizer is the only actively adversarial component. It never touches the
@@ -39,18 +39,18 @@ routes between them.
 A **threat model** is the answer to "what can the attacker do?". superred pins it
 down with two settings, both fixed when you construct the Controller:
 
-- a **[security-domain scope](/reference/security-domains)**: which trust
+- a **[security-domain scope]({{ '/reference/security-domains' | relative_url }})**: which trust
   boundaries of the target the attacker controls and can observe;
 - an **`llm_config`** (and cost cap): which model the attacker may call, and how
   much it may spend.
 
 One `Controller` evaluates one `SecurityClaim` under one `(scope, llm_config)`
 combination and returns one
-[`ThreatModelResult`](/reference/results#threatmodelresult). Comparing several
+[`ThreatModelResult`]({{ '/reference/results#threatmodelresult' | relative_url }}). Comparing several
 threat models (a weak attacker against a strong one, with feedback against
 without) is the caller's job: build several Controllers and run them, optionally
 sharing one live dashboard through
-[`run_all`](/reference/controller#sweeping-multiple-threat-models). This keeps
+[`run_all`]({{ '/reference/controller#sweeping-multiple-threat-models' | relative_url }}). This keeps
 each measurement a single, self-contained, reproducible unit.
 
 ## The event-driven loop
@@ -79,7 +79,7 @@ A task can take many runs: the attacker keeps trying until it declares itself
 done, exhausts its budget, or hits the Controller's `max_runs_per_task` cap. The
 full mechanism, the channel, the trajectory, and the exact event contract, is
 specified in
-[Events, Channel & Trajectory](/reference/events-and-trajectory).
+[Events, Channel & Trajectory]({{ '/reference/events-and-trajectory' | relative_url }}).
 
 ## Scope: the same events, filtered to a boundary
 
@@ -98,7 +98,7 @@ This is what lets a single target answer many precise questions ("what can an
 attacker do controlling only the user message?") without rewriting it. Access
 level is a property of the scope, not of the tag: a tag can be **read & write**
 (in `scope`) or **read-only** (in the separate `read_only` set). The exact
-semantics live in [Security Domains](/reference/security-domains).
+semantics live in [Security Domains]({{ '/reference/security-domains' | relative_url }}).
 
 ## What comes out
 
@@ -107,43 +107,43 @@ structured, resumable **results tree** to disk. A run streams live progress to a
 terminal dashboard while it is in flight, and the bundled `superred serve`
 command opens a web report over the results afterward. The result objects, the
 on-disk layout, the resume behavior, the reader API, and the reporting are all
-specified in [Results & Persistence](/reference/results).
+specified in [Results & Persistence]({{ '/reference/results' | relative_url }}).
 
 ## Map of this reference
 
 **Interfaces you implement or drive:**
 
-- **[Controller](/reference/controller)** the orchestrator: construction, the run
+- **[Controller]({{ '/reference/controller' | relative_url }})** the orchestrator: construction, the run
   loop, scope filtering, budget enforcement, sweeping.
-- **[Optimizer](/reference/optimizer)** the attacker interface: the actor model,
+- **[Optimizer]({{ '/reference/optimizer' | relative_url }})** the attacker interface: the actor model,
   `on_event`, consumption models, trajectory access.
-- **[Target](/reference/target)** the system-under-test interface: config and
+- **[Target]({{ '/reference/target' | relative_url }})** the system-under-test interface: config and
   query surfaces, controllables and observables, the run method, the state
   lifecycle.
-- **[Task](/reference/task)** one adversarial objective: generics, statelessness,
+- **[Task]({{ '/reference/task' | relative_url }})** one adversarial objective: generics, statelessness,
   configure and evaluate.
-- **[SecurityClaim](/reference/security-claim)** composable, re-iterable
+- **[SecurityClaim]({{ '/reference/security-claim' | relative_url }})** composable, re-iterable
   collections of tasks.
 
 **The mechanisms that connect them:**
 
-- **[Events, Channel & Trajectory](/reference/events-and-trajectory)** the
+- **[Events, Channel & Trajectory]({{ '/reference/events-and-trajectory' | relative_url }})** the
   communication substrate: the event hierarchy, the bidirectional channel, the
   trajectory and its filtered view, and the middleware that enforces scope.
-- **[Security Domains](/reference/security-domains)** the trust-boundary model:
+- **[Security Domains]({{ '/reference/security-domains' | relative_url }})** the trust-boundary model:
   tags, the forest, scopes, read-only access, and per-task resolvers.
 
 **The data:**
 
-- **[Core Types](/reference/types)** the plain value objects: goals, config and
+- **[Core Types]({{ '/reference/types' | relative_url }})** the plain value objects: goals, config and
   query specs, controllables, observables, scores, and LLM types.
-- **[Results & Persistence](/reference/results)** what a run produces: result
+- **[Results & Persistence]({{ '/reference/results' | relative_url }})** what a run produces: result
   objects, the on-disk tree, resume, the reader API, live reporting, and the
   `superred serve` web report.
 
 **Change history:**
 
-- **[Migration](/reference/migration)** per-version migration notes.
+- **[Migration]({{ '/reference/migration' | relative_url }})** per-version migration notes.
 
 ## Design commitments
 
@@ -180,7 +180,7 @@ The Controller never creates its own loop, so it embeds cleanly in larger async
 applications (web servers, notebooks, pipelines). The target and optimizer run
 as two `asyncio.Task`s on that loop; a target with internal parallelism may spawn
 more. The concurrency model is detailed in
-[Events, Channel & Trajectory](/reference/events-and-trajectory#concurrency-model).
+[Events, Channel & Trajectory]({{ '/reference/events-and-trajectory#concurrency-model' | relative_url }}).
 
 ## Where things live in the source
 

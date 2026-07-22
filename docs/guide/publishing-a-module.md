@@ -6,8 +6,8 @@ permalink: /guide/publishing-a-module
 
 # Publishing a Module
 
-Once you have written a [target](/guide/writing-a-target), an
-[optimizer](/guide/writing-an-optimizer), or a [claim](/guide/writing-tasks),
+Once you have written a [target]({{ '/guide/writing-a-target' | relative_url }}), an
+[optimizer]({{ '/guide/writing-an-optimizer' | relative_url }}), or a [claim]({{ '/guide/writing-tasks' | relative_url }}),
 package it as a standalone, pip-installable module so other people can install it
 and run it against their own systems.
 
@@ -57,4 +57,4 @@ scopes (the targets export their `*_TAG` constants for exactly this).
 
 Once your module is published, we would appreciate a note to
 [info@simonsure.com](mailto:info@simonsure.com) so we can add it to the
-[modules directory](/modules) for other people to find and use.
+[modules directory]({{ '/modules' | relative_url }}) for other people to find and use.

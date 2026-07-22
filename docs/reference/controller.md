@@ -7,10 +7,10 @@ permalink: /reference/controller
 # Controller
 
 The **Controller** is the orchestrator. It runs one
-[`SecurityClaim`](/reference/security-claim) against one **threat model**, drives
-the [event loop](/reference/events-and-trajectory) between a fresh target and a
+[`SecurityClaim`]({{ '/reference/security-claim' | relative_url }}) against one **threat model**, drives
+the [event loop]({{ '/reference/events-and-trajectory' | relative_url }}) between a fresh target and a
 fresh optimizer for each task, enforces the security scope, and returns one
-[`ThreatModelResult`](/reference/results#threatmodelresult).
+[`ThreatModelResult`]({{ '/reference/results#threatmodelresult' | relative_url }}).
 
 A **threat model** is one `(scope, llm_config)` combination, both fixed at
 construction. One Controller measures exactly that one combination. Comparing
@@ -18,7 +18,7 @@ several is the [caller's job](#sweeping-multiple-threat-models).
 
 This page covers how the Controller is built and how it runs. What a run
 **produces**, the result objects, the on-disk tree, resume, and reporting, is on
-[Results & Persistence](/reference/results).
+[Results & Persistence]({{ '/reference/results' | relative_url }}).
 
 ## Construction
 
@@ -74,7 +74,7 @@ The full constructor parameters, with types and defaults:
 | `task_cost_cap_usd` | `float \| None` | `None` | per-task attacker cost cap; `None` = unlimited |
 | `max_runs_per_task` | `int \| None` | `None` (→ 100) | per-task run cap; validated `>= 1` |
 | `include_feedback` | `bool` | `True` | whether `RunEndEvent` carries the evaluation |
-| `results_dir` | `str \| Path \| None` | `None` | results **root** (see [persistence](/reference/results#persistence)) |
+| `results_dir` | `str \| Path \| None` | `None` | results **root** (see [persistence]({{ '/reference/results#persistence' | relative_url }})) |
 | `scope_label` | `str \| None` | `None` | names a dynamic-scope run; required in that mode |
 | `persist` | `bool` | `True` | write a results tree |
 | `overwrite` | `bool` | `False` | force a full recompute of a resumable run |
@@ -104,9 +104,9 @@ a multi-task singleton needs an idempotent teardown.
 
 ## Scope may be a fixed `Scope` or a per-task `ScopeResolver`
 
-`scope` accepts either a fixed [`Scope`](/reference/security-domains#scope-and-scope_includes)
+`scope` accepts either a fixed [`Scope`]({{ '/reference/security-domains#scope-and-scope_includes' | relative_url }})
 (one read & write surface applied to every task) **or** a
-[`ScopeResolver`](/reference/security-domains#per-task-scopes-scoperesolver) (a
+[`ScopeResolver`]({{ '/reference/security-domains#per-task-scopes-scoperesolver' | relative_url }}) (a
 `Callable[[Task], Scope]` that computes the scope **once per task**).
 `read_only` independently accepts the same two forms, resolved separately.
 `callable(scope)` is the discriminator.
@@ -129,7 +129,7 @@ controller = Controller(
 
 The rules (`scope_label` requirement, task-skip on empty visibility, per-task
 error containment, identity matching) are specified in
-[Security Domains](/reference/security-domains#per-task-scopes-scoperesolver).
+[Security Domains]({{ '/reference/security-domains#per-task-scopes-scoperesolver' | relative_url }}).
 The resolved scope gates **all** optimizer-facing surfaces for that task (see
 [Security domain filtering](#security-domain-filtering)).
 
@@ -174,11 +174,11 @@ For each task:
 A **run** is one full pass of the target plus its evaluation. A task may take many
 runs; the loop ends when the optimizer returns `RunEndResponse(done=True)`, a
 `BudgetExhaustedError` is raised, or `max_runs_per_task` is reached. The
-`stop_reason` on each [`TaskResult`](/reference/results#taskresult) records which.
+`stop_reason` on each [`TaskResult`]({{ '/reference/results#taskresult' | relative_url }}) records which.
 
 Throughout, the Controller streams live progress to a
-[reporter](/reference/results#live-progress-reporting) and, unless `persist=False`,
-[persists](/reference/results#persistence) each task the moment it finishes.
+[reporter]({{ '/reference/results#live-progress-reporting' | relative_url }}) and, unless `persist=False`,
+[persists]({{ '/reference/results#persistence' | relative_url }}) each task the moment it finishes.
 
 ## Security domain filtering
 
@@ -195,20 +195,20 @@ scope** (= `scope | read_only`); when `read_only` is empty they are identical.
    `content=None`). So `observables` means "what the optimizer can read."
 3. **Controllable events.** Events for controllables outside the write scope are
    answered with `ControllableNoInjection` without reaching the optimizer. This is
-   the [`security_domain_filter` middleware](/reference/events-and-trajectory#middleware-where-scope-and-recording-live)
+   the [`security_domain_filter` middleware]({{ '/reference/events-and-trajectory#middleware-where-scope-and-recording-live' | relative_url }})
    composed onto `channel.send`. Because it is given the **write** scope, events
    under `read_only` tags are also declined, but, being within the visibility
    scope, they and their responses stay recorded and visible.
 4. **Trajectory.** The optimizer receives a
-   [`FilteredTrajectory`](/reference/events-and-trajectory#trajectory) of only
+   [`FilteredTrajectory`]({{ '/reference/events-and-trajectory#trajectory' | relative_url }}) of only
    in-scope items (visibility scope).
 5. **Feedback.** `sub_scores` whose `security_domain` is out of scope are dropped
    (an untagged sub-score is always visible). The `primary_score`, `success`, and
    `rationale` are always delivered.
 
 The full model, tags, forest, `scope` versus `read_only`, and resolvers, is on
-[Security Domains](/reference/security-domains). The filtering itself is
-implemented as [middleware](/reference/events-and-trajectory#middleware-where-scope-and-recording-live)
+[Security Domains]({{ '/reference/security-domains' | relative_url }}). The filtering itself is
+implemented as [middleware]({{ '/reference/events-and-trajectory#middleware-where-scope-and-recording-live' | relative_url }})
 composed onto the channel:
 
 ```python
@@ -226,7 +226,7 @@ model (it defines the attacker's compute).
 - **Configuration.** `llm_config=LLMConfig(...)` sets the model and credentials
   (optional; omit for a non-LLM optimizer, which then gets a noop client).
 - **Per-task budget.** `task_cost_cap_usd` (USD) caps the attacker's cost. A fresh
-  [`LLMClient`](/reference/types#llmclient-corellmpy) is built per task, so the cap
+  [`LLMClient`]({{ '/reference/types#llmclient-corellmpy' | relative_url }}) is built per task, so the cap
   resets per task (`None` = unlimited). It bounds only the attacker; the judge and
   target are never bounded by it.
 - **Constrained client.** The `LLMClient` locks the model and credentials; the
@@ -234,7 +234,7 @@ model (it defines the attacker's compute).
   `litellm.completion_cost()`, and a pre-call check raises `BudgetExhaustedError`
   once the cap is reached.
 - **Usage tracking.** Each result carries usage (see
-  [`RunResult`](/reference/results#runresult) / [`TaskResult`](/reference/results#taskresult)),
+  [`RunResult`]({{ '/reference/results#runresult' | relative_url }}) / [`TaskResult`]({{ '/reference/results#taskresult' | relative_url }})),
   enabling per-run cost and budget-versus-performance analysis.
 
 ## Sweeping multiple threat models
@@ -265,7 +265,7 @@ dashboard, and returns their `ThreatModelResult`s in input order. A bare
 `asyncio.gather(*(c.run() for c in controllers))` also runs and persists
 correctly, but does not coordinate the live display. If they share one
 `results_dir` root, the `experiments.json` index links them all (see
-[persistence](/reference/results#persistence)).
+[persistence]({{ '/reference/results#persistence' | relative_url }})).
 
 ## Design decisions
 
@@ -293,6 +293,6 @@ correctly, but does not coordinate the live display. If they share one
   optimizer and target is wrapped in `finally`.
 - **The trajectory is the single event log.** Events and responses are recorded
   directly onto the trajectory, the
-  [`trajectory_recorder`](/reference/events-and-trajectory#middleware-where-scope-and-recording-live)
+  [`trajectory_recorder`]({{ '/reference/events-and-trajectory#middleware-where-scope-and-recording-live' | relative_url }})
   for the controllable traffic, the target's `emit` for observable events, and the
   controller itself for the `RunEndEvent`. There is no separate log.

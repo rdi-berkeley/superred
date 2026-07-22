@@ -119,14 +119,14 @@ On an interactive terminal you get a live dashboard that updates as the run
 proceeds:
 
 <figure class="doc-figure">
-  <img src="/assets/img/run-live-terminal.png" alt="superred's live terminal dashboard during a run: a header line with task count, attack success rate, running count and attacker spend, above a table of threat models and tasks with progress, ASR, score, outcome counts and cost.">
+  <img src="{{ '/assets/img/run-live-terminal.png' | relative_url }}" alt="superred's live terminal dashboard during a run: a header line with task count, attack success rate, running count and attacker spend, above a table of threat models and tasks with progress, ASR, score, outcome counts and cost.">
   <figcaption>The live terminal dashboard, updating as the run proceeds: each threat model and its tasks, with progress, attack success rate, score, and attacker spend.</figcaption>
 </figure>
 
 and settles into the final result once the run finishes:
 
 <figure class="doc-figure">
-  <img src="/assets/img/run-finished-terminal.png" alt="superred's terminal dashboard after the run finishes: the header shows 1 of 1 tasks, 100% attack success rate, 0 still running, and $0.0000 attacker spend, with the threat-model row marked complete at full progress and 100% ASR.">
+  <img src="{{ '/assets/img/run-finished-terminal.png' | relative_url }}" alt="superred's terminal dashboard after the run finishes: the header shows 1 of 1 tasks, 100% attack success rate, 0 still running, and $0.0000 attacker spend, with the threat-model row marked complete at full progress and 100% ASR.">
   <figcaption>When the run finishes, the dashboard settles into the final result: here 1 of 1 tasks succeeded, 100% attack success rate, and $0 attacker spend (the demo attacker replays a fixed prompt list and calls no LLM, so it costs nothing).</figcaption>
 </figure>
 
@@ -140,7 +140,7 @@ It opens an interactive web report where you can browse the summary and drill
 into per-task metrics, errors, and full run trajectories.
 
 <figure class="doc-figure">
-  <img src="/assets/img/results-web-report.png" alt="superred web report: attack success rate 100 percent over one task, attacker cost $0.00, a run-outcomes bar, and a per-task table showing one succeeded task.">
+  <img src="{{ '/assets/img/results-web-report.png' | relative_url }}" alt="superred web report: attack success rate 100 percent over one task, attacker cost $0.00, a run-outcomes bar, and a per-task table showing one succeeded task.">
   <figcaption>The web report served from a results directory: attack success rate, attacker cost (here $0.00, since the demo attacker makes no LLM calls), run outcomes, and a per-task table you can expand to open each run's trajectory.</figcaption>
 </figure>
 
@@ -180,14 +180,14 @@ Everything you build later is a variation on the same five parts:
 
 ## What to read next
 
-We recommend you read [Core Concepts](/guide/core-concepts) next: it explains
+We recommend you read [Core Concepts]({{ '/guide/core-concepts' | relative_url }}) next: it explains
 the vocabulary and the run loop that everything else builds on.
 
 From there, two paths lead out: run existing pieces, or build your own.
 
-- [Using a Module](/guide/using-modules) shows how to drop in the ready-made
-  attackers, targets, and benchmarks from the [module catalogue](/modules).
-- [Running Evaluations](/guide/running-evaluations) covers sweeping several
+- [Using a Module]({{ '/guide/using-modules' | relative_url }}) shows how to drop in the ready-made
+  attackers, targets, and benchmarks from the [module catalogue]({{ '/modules' | relative_url }}).
+- [Running Evaluations]({{ '/guide/running-evaluations' | relative_url }}) covers sweeping several
   threat models at once, scaling up runs, and saving results to disk.
-- [Writing a Target](/guide/writing-a-target) walks through wrapping your own AI
+- [Writing a Target]({{ '/guide/writing-a-target' | relative_url }}) walks through wrapping your own AI
   system as a target.

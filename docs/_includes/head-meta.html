@@ -28,8 +28,8 @@
 <meta name="twitter:description" content="{{ m_desc | strip_newlines | escape }}">
 <meta name="twitter:image" content="{{ m_image | absolute_url }}">
 
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="alternate icon" href="/assets/img/favicon.png">
+<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="alternate icon" href="{{ '/assets/img/favicon.png' | relative_url }}">
 
 <!-- Display faces for the Street Machine wordmark (hero + header), site-wide. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

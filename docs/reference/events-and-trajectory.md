@@ -260,7 +260,7 @@ declined by the filter is still recorded, which is exactly what makes a
 filter (so a read-only controllable's event is declined), but the recorder still
 writes it, and it is within the wider **visibility** scope, so it remains visible
 through the optimizer's filtered trajectory. The read-versus-write distinction is
-specified in [Security Domains](/reference/security-domains).
+specified in [Security Domains]({{ '/reference/security-domains' | relative_url }}).
 
 > Custom middleware is not a public extension point today. The Controller composes
 > this fixed two-stage stack internally. If you need extra behavior (rate
@@ -284,7 +284,7 @@ neither knows nor cares what is on the other end.
 ## Concurrency model
 
 There is one event loop on one thread ([provided by the
-caller](/reference/#the-asyncio-runtime)). On it, the target's `run()` and the
+caller]({{ '/reference/#the-asyncio-runtime' | relative_url }})). On it, the target's `run()` and the
 optimizer's `run()` are two separate `asyncio.Task`s. Cooperative scheduling
 interleaves them: each yields at its `await` points and the loop advances the
 other.
@@ -324,7 +324,7 @@ async def run(self, emit, send_event):
 **Optimizer consumption is the optimizer's choice.** The default `run()` consumes
 events one at a time. An optimizer may override `run()` to spawn a task per event
 (parallel) or to run background work alongside event handling (continuous). The
-[Optimizer](/reference/optimizer#consumption-models) page details this.
+[Optimizer]({{ '/reference/optimizer#consumption-models' | relative_url }}) page details this.
 
 Because every shared object (trajectory, channel, envelope, LLM client) is
 thread-safe, these patterns are safe to combine.

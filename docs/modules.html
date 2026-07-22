@@ -48,7 +48,7 @@ permalink: /modules
           {% for m in site.data.modules.optimizers %}
           <div class="mod-row" data-suit="{{ m.suit | join: ' ' }}" data-prov="{% if m.first_party %}first{% else %}port{% endif %}">
             <div class="mod-name">
-              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="/guide/using-modules#using-an-optimizer" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
+              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="{{ '/guide/using-modules#using-an-optimizer' | relative_url }}" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
               <span class="mod-meta">{% for s in m.suit %}<span class="hint"><span class="mod-suit mod-suit-{{ s }}">{{ s }}</span><span class="tip">{{ suit_tip }}</span></span>{% endfor %}{% unless m.first_party %}<span class="hint"><span class="mod-tag mod-tag-port">Community port</span><span class="tip">{{ prov_tip }}</span></span>{% endunless %}<span class="hint"><span class="mod-tag mod-tag-agentic">Agentic extended</span><span class="tip">{{ agentic_tip }}</span></span></span>
             </div>
             <div class="mod-desc">{{ m.blurb }}</div>
@@ -62,7 +62,7 @@ permalink: /modules
           {% for m in site.data.modules.targets %}
           <div class="mod-row" data-suit="{{ m.suit | join: ' ' }}" data-prov="{% if m.first_party %}first{% else %}port{% endif %}">
             <div class="mod-name">
-              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="/guide/using-modules#using-a-target" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
+              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="{{ '/guide/using-modules#using-a-target' | relative_url }}" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
               <span class="mod-meta">{% for s in m.suit %}<span class="hint"><span class="mod-suit mod-suit-{{ s }}">{{ s }}</span><span class="tip">{{ suit_tip }}</span></span>{% endfor %}{% unless m.first_party %}<span class="hint"><span class="mod-tag mod-tag-port">Community port</span><span class="tip">{{ prov_tip }}</span></span>{% endunless %}</span>
             </div>
             <div class="mod-desc">{{ m.blurb }}</div>
@@ -76,7 +76,7 @@ permalink: /modules
           {% for m in site.data.modules.security_claims %}
           <div class="mod-row" data-suit="{{ m.suit | join: ' ' }}" data-prov="{% if m.first_party %}first{% else %}port{% endif %}">
             <div class="mod-name">
-              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="/guide/using-modules#using-a-security-claim" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
+              <span class="mod-title">{{ m.name }} <a class="mod-pip" href="{{ '/guide/using-modules#using-a-security-claim' | relative_url }}" title="Not yet published on PyPI">{{ m.pip }} ⚠️</a></span>
               <span class="mod-meta">{% for s in m.suit %}<span class="hint"><span class="mod-suit mod-suit-{{ s }}">{{ s }}</span><span class="tip">{{ suit_tip }}</span></span>{% endfor %}{% unless m.first_party %}<span class="hint"><span class="mod-tag mod-tag-port">Community port</span><span class="tip">{{ prov_tip }}</span></span>{% endunless %}</span>
             </div>
             <div class="mod-desc">{{ m.blurb }}</div>

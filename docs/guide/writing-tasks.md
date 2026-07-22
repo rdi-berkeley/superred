@@ -9,7 +9,7 @@ permalink: /guide/writing-tasks
 A **Task** is one adversarial objective: it sets the target up, then judges
 whether the attack worked. A **SecurityClaim** bundles tasks into a testable
 unit. This is where benchmark-specific knowledge lives (which prompts, what
-counts as success), keeping the [Target](/guide/writing-a-target) general.
+counts as success), keeping the [Target]({{ '/guide/writing-a-target' | relative_url }}) general.
 
 ## What a task must provide
 
@@ -145,7 +145,7 @@ the attacker sees sub-scores for the boundary it is attacking plus any untagged
 ones. `primary_score` carries no `security_domain`: it is the unscoped
 optimization signal and is never filtered. `primary_score`, `success`, and
 `rationale` are always shown. This lets one task report several sub-scores while each threat model only reveals the relevant ones. See
-[Security Domains](/guide/security-domains).
+[Security Domains]({{ '/guide/security-domains' | relative_url }}).
 
 ## Tasks must be stateless
 
